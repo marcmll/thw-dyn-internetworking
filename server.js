@@ -18,6 +18,6 @@ app.get('/', (req, res) => {
    res.render('book-details.ejs')
 })
 
-app.listen(80, () => {
-    console.log('Listening on 80')
+app.listen(3000, () => {
+    console.log('Listening on 3000')
 })
