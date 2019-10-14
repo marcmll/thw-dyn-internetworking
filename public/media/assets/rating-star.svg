@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Book-Detail" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Book-Detail-[Desktop-HD]" transform="translate(-1196.000000, -250.000000)" fill="#FFCE85" stroke="#FFCE85" stroke-width="1.6">
+            <g id=".review.highlight" transform="translate(1045.000000, 217.000000)">
+                <g id="Rating" transform="translate(152.000000, 34.000000)">
+                    <polygon id="Path" points="8 1.7408297e-13 10.472 5.008 16 5.816 12 9.712 12.944 15.216 8 12.616 3.056 15.216 4 9.712 0 5.816 5.528 5.008"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
