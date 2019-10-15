@@ -17,8 +17,8 @@ html, body {
 }
 
 p {
-    font-size: 20px;
-    line-height: 30px;
+    font-size: 18px;
+    line-height: 28px;
     color: #495057;
 }
 
@@ -122,6 +122,8 @@ header {
                 padding: 11px 20px 12px 49px;
                 width: 480px;
                 border: 0px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 300;
                 font-size: 18px;
                 line-height: 18px;
                 color: #B6BCC1;
@@ -415,6 +417,10 @@ main {
         align-items: center;
     }
 
+    .book-reviews > a.btn:hover {
+        background-color: rgb(232, 237, 240); 
+    }
+
         .book-reviews > a.btn img {
             margin: 0 10px 0 0;
         }
@@ -430,13 +436,142 @@ main {
 }
 
 
-@media all and (max-width: 1500px){
+@media all and (max-width: 1600px){
+
+    p {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
     .show-xl {
         display: inline;
     }
     .hide-xl {
         display: none;
     }
+
+    header .container {
+        max-width: 1200px;
+    }
+
+    main .container {
+        max-width: 1200px;
+    }
+
+    .book-details {
+        width: 580px;
+    }
+
+        .book-details .book-highlights {
+            padding: 25px 35px 25px 25px;
+            width: calc(100% - 60px);
+            grid-column-gap: 25px;
+        }
+
+            .book-details .book-highlights .book-cover {
+                width: 180px;
+                height: 277px;
+                grid-area: book-cover;
+            }
+
+                .book-details .book-highlights .book-title > h1 {
+                    font-size: 24px;
+                    line-height: 32px;
+                }
+
+                .book-details .book-highlights .book-title > p.author {
+                    font-size: 16px;
+                    line-height: 24px;
+                }
+
+                .book-details .book-highlights .book-rating p.book-rating-info {
+                    margin: 8px 0 0 0;
+                    font-size: 12px;
+                    line-height: 12px;
+                }
+
+            .book-details .book-highlights .book-share {
+                width: 180px;
+            }
+
+                .book-details .book-highlights .book-share a.btn-highlight {
+                    height: 34px;
+                }
+
+                    .book-details .book-highlights .book-share a.btn-highlight img {
+                        margin: 0 8px 0 0;
+                    }
+
+                .book-details .book-highlights .book-meta .meta-item {
+                    margin: 0 0 0 20px;
+                }
+
+                    .book-details .book-highlights .book-meta .meta-item img {
+                        margin: 0 10px 0 0;
+                    }
+
+                    .book-details .book-highlights .book-meta .meta-item p {
+                        font-size: 12px;
+                    }
+
+        .book-details .book-description {
+            padding: 40px 0 0 0;
+            width: 100%;
+        }
+
+            .book-details .book-description p {
+                font-size: 18px;
+                line-height: 30px;
+            }
+
+                    .book-details .book-description .book-meta .meta-item p {
+                        font-size: 12px;
+                    }
+
+    .book-reviews {
+        width: calc(100% - 580px - 45px);
+    }
+
+        .book-reviews > .header {
+            margin: 0 0 5px 0;
+        }
+
+            .book-reviews .header .btn-cta {
+                padding: 10px 20px;
+            }
+
+        .book-reviews .review {
+            margin: 20px 0 0 0;
+            padding: 25px 30px 25px 25px;
+        }
+
+                    .book-reviews .review > .header .rating .rating-stars {
+                        margin: 0 0 0 8px;
+                        line-height: 14px;
+                    }
+
+                        .book-reviews .review > .header .rating .rating-stars img {
+                            height: 14px;
+                        }
+
+                .book-reviews .review > .header .date {
+                    font-size: 14px;
+                }
+
+            .book-reviews .review > .description {
+                margin: 15px 0 0 0;
+            }
+
+        .book-reviews > a.btn {
+            padding: 11px 0;
+            margin: 20px 0 0 0;
+            font-size: 14px;
+        }
+
+            .book-reviews > a.btn img {
+                margin: 0 8px 0 0;
+            }
+
 }
 
 @media all and (max-width: 1300px){
