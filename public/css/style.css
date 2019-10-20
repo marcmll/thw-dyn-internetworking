@@ -443,6 +443,14 @@ main {
         line-height: 26px;
     }
 
+    h2 {
+        font-size: 28px;
+    }
+
+    .background {
+        height: 440px;
+    }
+
     .show-xl {
         display: inline;
     }
@@ -451,15 +459,16 @@ main {
     }
 
     header .container {
-        max-width: 1200px;
+        max-width: 1100px;
     }
 
     main .container {
-        max-width: 1200px;
+        padding: 60px 0;
+        max-width: 1100px;
     }
 
     .book-details {
-        width: 580px;
+        width: 550px;
     }
 
         .book-details .book-highlights {
@@ -475,13 +484,13 @@ main {
             }
 
                 .book-details .book-highlights .book-title > h1 {
-                    font-size: 24px;
-                    line-height: 32px;
+                    font-size: 22px;
+                    line-height: 28px;
                 }
 
                 .book-details .book-highlights .book-title > p.author {
                     font-size: 16px;
-                    line-height: 24px;
+                    line-height: 20px;
                 }
 
                 .book-details .book-highlights .book-rating p.book-rating-info {
@@ -519,17 +528,12 @@ main {
             width: 100%;
         }
 
-            .book-details .book-description p {
-                font-size: 18px;
-                line-height: 30px;
-            }
-
                     .book-details .book-description .book-meta .meta-item p {
                         font-size: 12px;
                     }
 
     .book-reviews {
-        width: calc(100% - 580px - 45px);
+        width: calc(100% - 550px - 40px);
     }
 
         .book-reviews > .header {
@@ -574,13 +578,165 @@ main {
 
 }
 
-@media all and (max-width: 1300px){
+@media all and (max-width: 1240px){
+
+    p {
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .background {
+        height: 390px;
+    }
+
     .show-l {
         display: inline;
     }
     .hide-l {
         display: none;
     }
+
+    header .container {
+        max-width: 900px;
+    }
+
+    main .container {
+        padding: 54px 0 60px 0;
+        max-width: 900px;
+    }
+
+    .book-details {
+        width: 450px;
+    }
+
+        .book-details .book-highlights {
+            padding: 20px 30px 20px 20px;
+            width: calc(100% - 40px);
+            grid-column-gap: 20px;
+            grid-row-gap: 15px;
+        }
+
+            .book-details .book-highlights .book-cover {
+                width: 160px;
+                height: 246px;
+            }
+
+                .book-details .book-highlights .book-title > h1 {
+                    font-size: 20px;
+                    line-height: 24px;
+                }
+
+                .book-details .book-highlights .book-title > p.author {
+                    font-size: 14px;
+                    line-height: 16px;
+                }
+
+                .book-details .book-highlights .book-rating .book-rating-stars img {
+                    height: 15px;
+                    width: auto;
+                    line-height: 13px;
+                }
+
+                .book-details .book-highlights .book-rating p.book-rating-info {
+                    margin: 5px 0 0 0;
+                    font-size: 10px;
+                    line-height: 10px;
+                }
+
+            .book-details .book-highlights .book-share {
+                width: 160px;
+            }
+
+                .book-details .book-highlights .book-share a.btn-highlight {
+                    height: 32px;
+                    font-size: 12px;
+                    line-height: 12px;
+                }
+
+                    .book-details .book-highlights .book-share a.btn-highlight img {
+                        margin: 0 8px 0 0;
+                    }
+
+                .book-details .book-highlights .book-meta .meta-item {
+                    margin: 0 0 0 20px;
+                }
+
+                    .book-details .book-highlights .book-meta .meta-item img {
+                        height: 15px;
+                        width: auto;
+                        margin: 0 8px 0 0;
+                    }
+
+                    .book-details .book-highlights .book-meta .meta-item p {
+                        font-size: 10px;
+                    }
+
+        .book-details .book-description {
+            padding: 30px 0 0 0;
+            width: 100%;
+        }
+
+            .book-details .book-description .book-meta {
+                padding: 30px 0 0 0;
+            }
+
+                .book-details .book-description .book-meta .meta-item {
+                    margin: 0 0 0 25px;
+                }
+
+                    .book-details .book-description .book-meta .meta-item p {
+                        font-size: 12px;
+                    }
+
+    .book-reviews {
+        width: 410px;
+    }
+
+        .book-reviews > .header {
+            margin: 0 0 5px 0;
+        }
+
+            .book-reviews .header .btn-cta {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+
+        .book-reviews .review {
+            margin: 15px 0 0 0;
+            padding: 25px 30px 25px 25px;
+        }
+
+                    .book-reviews .review > .header .rating .rating-stars {
+                        margin: 0 0 0 8px;
+                        line-height: 13px;
+                    }
+
+                        .book-reviews .review > .header .rating .rating-stars img {
+                            height: 12px;
+                            width: auto;
+                        }
+
+                .book-reviews .review > .header .date {
+                    font-size: 12px;
+                }
+
+            .book-reviews .review > .description {
+                margin: 10px 0 0 0;
+            }
+
+        .book-reviews > a.btn {
+            padding: 11px 0;
+            margin: 15px 0 0 0;
+            font-size: 12px;
+        }
+
+            .book-reviews > a.btn img {
+                margin: 0 8px 0 0;
+            }
 }
 
 @media all and (max-width: 1024px){

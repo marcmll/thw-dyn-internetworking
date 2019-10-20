@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-   res.render('book-details.ejs')
+    res.render('book-details.ejs')
 })
 
 app.listen(3000, () => {
