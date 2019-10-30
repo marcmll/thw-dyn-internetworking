@@ -209,6 +209,7 @@ main {
                 object-fit: cover;
                 object-position: 50% 50%;
                 box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+                background-color: white;
             }
 
         .book-details .book-highlights .book-title {
@@ -355,9 +356,45 @@ main {
                 background-color: #2C75B4;
             }
 
+    .book-reviews > form {
+        margin: 20px 0 0 0;
+        padding: 30px 35px 30px 30px;
+        width: calc(100% - 65px);
+        background-color: white;
+        border: 1px solid #E5E8EB;
+        display: inline-flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+        .book-reviews > form > input {
+            margin: 0;
+            width: calc(50% - 5px);
+            height: 30px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .book-reviews > form > textarea {
+            margin: 15px 0 0 0;
+            width: 100%;
+            min-height: 100px;
+            max-height: 200px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .book-reviews > form > button {
+            margin: 15px 0 0 0;
+            width: 100%;
+        }
+
     .book-reviews .review {
         margin: 20px 0 0 0;
         padding: 30px 35px 30px 30px;
+        width: calc(100% - 65px);
         background-color: white;
         border: 1px solid #E5E8EB;
         display: inline-block;
@@ -573,6 +610,7 @@ main {
         .book-reviews .review {
             margin: 20px 0 0 0;
             padding: 25px 30px 25px 25px;
+            width: calc(100% - 55px);
         }
 
                     .book-reviews .review > .header .rating .rating-stars {

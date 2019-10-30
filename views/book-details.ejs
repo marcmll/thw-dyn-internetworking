@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Title -->
-    <title>BetterReads &raquo; Factfulness: Ten Reasons We're Wrong About the World – and Why Things Are Better Than You Think</title>
+    <title>BetterReads &raquo; <%= book.title %></title>
+    <base href="/">
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -31,11 +32,15 @@
             <div class="book-details">
                 <div class="book-highlights">
                     <div class="book-cover">
-                        <img src="media/assets/book-cover.jpg" alt="Factfulness Book Cover">
+                        <img src="<%= book.bookMediaLink %>" alt="<%= book.title %> Book Cover">
                     </div>
                     <div class="book-title">
-                        <h1>Factfulness: Ten Reasons We're Wrong About the World – and Why Things Are Better Than You Think</h1>
-                        <p class="author">Hans Rosling, Ola Rosling, Anna Rosling Rönnlund</p>
+                        <h1><%= book.title %></h1>
+                        <p class="author">
+                            <% for(let i = 1; i <= book.authors.length; i++) { %>
+                                <%= book.authors[(i - 1)] %><% if(i !== (book.authors.length)) { %>,<% } %>
+                            <% } %>
+                        </p>
                     </div>
                     <div class="book-rating">
                         <div class="book-rating-stars">
@@ -58,36 +63,34 @@
                     <div class="book-meta">
                         <div class="meta-item">
                             <img src="media/assets/tag-icon.svg" alt="Genre Icon">
-                            <p>Nonfiction, Science</p>
+                            <p>
+                                <% for(let i = 1; i <= book.genres.length; i++) { %>
+                                    <%= book.genres[(i - 1)] %><% if(i !== (book.genres.length)) { %>,<% } %>
+                                <% } %>
+                            </p>
                         </div>
                         <div class="meta-item">
                             <img src="media/assets/pages-icon.svg" alt="Pages Icon">
-                            <p>342 Pages</p>
+                            <p><%= book.pageCount %> Pages</p>
                         </div>
                     </div>
                 </div>
                 <div class="book-description">
                     <p>
-                        Factfulness: The stress-reducing habit of only carrying opinions for which you have strong supporting facts.<br><br>
-
-                        When asked simple questions about global trends—<i>what percentage of the world’s population live in poverty; why the world’s population is increasing; how many girls finish school</i>—we systematically <span class="hide-m"> get the answers wrong. In Factfulness, Professor of International Health and global TED phenomenon Hans Rosling, together with his two long-time collaborators, Anna and Ola, offers a <b>radical new explanation of why this happens</b>. They reveal <b>the ten instincts that distort our perspective</b>—from our tendency to divide the world into two camps (usually some version of us and them) to the way we consume media (where fear rules) to how we perceive progress (believing that most things are getting worse).<br><br>
-                        
-                        Our problem is that we don’t know what we don’t know, and even our guesses are informed by unconscious and predictable biases.<br><br>
-                            
-                        <b>It turns out that the world, for all its imperfections, is in a much better state than we might think</b>. That doesn’t mean there aren’t real concerns. But when we worry about everything all the time instead of embracing a worldview based on facts, we can lose our ability to focus on the things that threaten us most.</span><a class="hide-xxl show-m text-light" href="#">... read more</a>
+                        <%- book.description %><a class="hide-xxl show-m text-light" href="#">... read more</a>
                     </p>
                     <div class="book-meta hide-m">
                         <div class="meta-item">
                             <img src="media/assets/cal-icon.svg" alt="Calender Icon">
-                            <p>January 25th 2018</p>
+                            <p><%= book.datePublished %></p>
                         </div>
                         <div class="meta-item">
                             <img src="media/assets/language-icon.svg" alt="Language Icon">
-                            <p>English</p>
+                            <p><%= book.language %></p>
                         </div>
                         <div class="meta-item">
                             <img src="media/assets/isbn-icon.svg" alt="Hash Icon">
-                            <p>ISBN: 1473637465</p>
+                            <p>ISBN: <%= book.ISBN %></p>
                         </div>
                     </div>
                 </div>
@@ -99,28 +102,38 @@
                         Review This Book
                     </a>
                 </div>
-                <div class="review">
-                    <div class="header">
-                        <div class="rating">
-                            <p><b>Marc</b> rated it</p>
-                            <div class="rating-stars">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
+                <form action="/uploadReview" method="POST">
+                    <input name="bookId" type="hidden" value="<%= book.bookId %>">
+                    <input type="text" placeholder="Name" name="userName" required>
+                    <input type="number" min="1" max="5" placeholder="Rating (1 - 5)" name="numberRating" required>
+                    <textarea name="description" cols="30" rows="10" placeholder="Description" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+                <% for(let i = 0; i < book.reviews.length; i++) { %>
+                    <div class="review">
+                        <div class="header">
+                            <div class="rating">
+                                <p><b><%= book.reviews[i].userName %></b> rated it</p>
+                                <div class="rating-stars">
+                                    <% for(let j = 1; j <= book.reviews[i].numberRating; j++) { %>
+                                        <img src="media/assets/rating-star.svg" alt="Star Icon">
+                                    <% } %>
+                                    <% for(let j = 5; j > book.reviews[i].numberRating; j--) { %>
+                                        <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
+                                    <% } %>
+                                </div>
                             </div>
+                            <p class="date text-light">
+                                <span class="hide-s">8 October 2019</span>
+                                <span class="hide-xxl show-s">8/10/19</span>
+                            </p>
                         </div>
-                        <p class="date text-light">
-                            <span class="hide-s">8 October 2019</span>
-                            <span class="hide-xxl show-s">8/10/19</span>
-                        </p>
+                        <div class="description">
+                            <p><%= book.reviews[i].description %></p>
+                        </div>
                     </div>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                    </div>
-                </div>
-                <div class="review">
+                <% } %>
+                <!-- <div class="review">
                     <div class="header">
                         <div class="rating">
                             <p><b>Marvin</b> rated it</p>
@@ -186,7 +199,7 @@
                         
                         Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore <a class="read-more text-light" href="#">… read more</a></p>
                     </div>
-                </div>
+                </div> -->
                 <a class="btn" href="#">
                     <img src="media/assets/plus-icon.svg" alt="Plus Icon">
                     Load More Reviews

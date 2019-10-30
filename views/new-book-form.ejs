@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Title -->
+    <title>BetterReads &raquo; New Book</title>
+    <base href="/">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<style>
+    body {
+        padding: 60px 0 0 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    input, textarea {
+        margin: 0 0 10px 0;
+        display: block;
+        width: 200px;
+        height: 26px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+    }
+
+    textarea {
+        height: auto;
+    }
+
+    button {
+        margin: 10px 0 0 0;
+        width: 200px;
+        height: 26px;
+        cursor: pointer;
+        background-color: white;
+    }
+</style>
+<body>
+    <form action="/uploadBook" method="POST">
+        <input type="text" placeholder="Book-ID" name="bookId">
+        <input type="text" placeholder="ISBN" name="isbn">
+        <input type="text" placeholder="Title" name="title">
+        <input type="text" placeholder="Genres (seperate with commas)" name="genres">
+        <input type="text" placeholder="Authors (seperate with commas)" name="authors">
+        <textarea name="description" cols="30" rows="10" placeholder="Description (supports HTML)"></textarea>
+        <input type="number" placeholder="Page Count" name="pageCount">
+        <input type="text" placeholder="Language" name="language">
+        <input type="text" placeholder="Date Published" name="datePublished">
+        <input type="text" placeholder="Book Media Link" name="bookMediaLink">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
