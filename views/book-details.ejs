@@ -37,21 +37,22 @@
                     <div class="book-title">
                         <h1><%= book.title %></h1>
                         <p class="author">
-                            <% for(let i = 1; i <= book.authors.length; i++) { %>
+                            <% for (let i = 1; i <= book.authors.length; i++) { %>
                                 <%= book.authors[(i - 1)] %><% if(i !== (book.authors.length)) { %>,<% } %>
                             <% } %>
                         </p>
                     </div>
                     <div class="book-rating">
                         <div class="book-rating-stars">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            <% for (let j = 1; j <= Math.floor(book.averageRatingInteger); j++) { %>
+                                <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            <% } %>
+                            <% if ((Math.round(book.averageRatingInteger) - book.averageRatingInteger !== 0) && (Math.round(book.averageRatingInteger) - Math.round(book.averageRatingInteger).toFixed(0) !== 1)) { %>
+                                <img src="media/assets/half-rating-star.svg" alt="Half Star Icon">
+                            <% } %>
                         </div>
                         <p class="book-rating-info text-light">
-                            (4,36 Avg Rating<span class="rating-count hide-xxl">&nbsp;&nbsp;|&nbsp;&nbsp;110 Ratings</span><span class="review-count hide-s">&nbsp;&nbsp;|&nbsp;&nbsp;47 Reviews</span>)
+                            (<%= book.averageRating %> Avg Rating<span class="rating-count hide-xxl">&nbsp;&nbsp;|&nbsp;&nbsp;<%= book.reviews.length %> Ratings</span><span class="review-count hide-s">&nbsp;&nbsp;|&nbsp;&nbsp;<%= book.reviews.length %> Reviews</span>)
                         </p>
                     </div>
                     <div class="book-share">
@@ -64,7 +65,7 @@
                         <div class="meta-item">
                             <img src="media/assets/tag-icon.svg" alt="Genre Icon">
                             <p>
-                                <% for(let i = 1; i <= book.genres.length; i++) { %>
+                                <% for (let i = 1; i <= book.genres.length; i++) { %>
                                     <%= book.genres[(i - 1)] %><% if(i !== (book.genres.length)) { %>,<% } %>
                                 <% } %>
                             </p>
@@ -105,20 +106,33 @@
                 <form action="/uploadReview" method="POST">
                     <input name="bookId" type="hidden" value="<%= book.bookId %>">
                     <input type="text" placeholder="Name" name="userName" required>
-                    <input type="number" min="1" max="5" placeholder="Rating (1 - 5)" name="numberRating" required>
-                    <textarea name="description" cols="30" rows="10" placeholder="Description" required></textarea>
+                    <input type="hidden" min="1" max="5" name="numberRating" id="number-rating" required>
+                    <div class="number-rating">
+                        <div class="star-icon" id="number-rating-5" onclick="updateRating(this.id)">
+                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                        </div><div class="star-icon" id="number-rating-4" onclick="updateRating(this.id)">
+                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                        </div><div class="star-icon" id="number-rating-3" onclick="updateRating(this.id)">
+                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                        </div><div class="star-icon" id="number-rating-2" onclick="updateRating(this.id)">
+                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                        </div><div class="star-icon" id="number-rating-1" onclick="updateRating(this.id)">
+                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                        </div>
+                    </div>
+                    <textarea name="description" cols="30" rows="10" placeholder="Review" required></textarea>
                     <button type="submit">Submit</button>
                 </form>
-                <% for(let i = 0; i < book.reviews.length; i++) { %>
+                <% for (let i = 0; i < book.reviews.length; i++) { %>
                     <div class="review">
                         <div class="header">
                             <div class="rating">
                                 <p><b><%= book.reviews[i].userName %></b> rated it</p>
                                 <div class="rating-stars">
-                                    <% for(let j = 1; j <= book.reviews[i].numberRating; j++) { %>
+                                    <% for (let j = 1; j <= book.reviews[i].numberRating; j++) { %>
                                         <img src="media/assets/rating-star.svg" alt="Star Icon">
                                     <% } %>
-                                    <% for(let j = 5; j > book.reviews[i].numberRating; j--) { %>
+                                    <% for (let j = 5; j > book.reviews[i].numberRating; j--) { %>
                                         <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
                                     <% } %>
                                 </div>
@@ -133,73 +147,6 @@
                         </div>
                     </div>
                 <% } %>
-                <!-- <div class="review">
-                    <div class="header">
-                        <div class="rating">
-                            <p><b>Marvin</b> rated it</p>
-                            <div class="rating-stars">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                            </div>
-                        </div>
-                        <p class="date text-light">
-                            <span class="hide-s">6 October 2019</span>
-                            <span class="hide-xxl show-s">6/10/19</span>
-                        </p>
-                    </div>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.<br><br>
-                        
-                        Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore <a class="read-more text-light" href="#">… read more</a></p>
-                    </div>
-                </div>
-                <div class="review">
-                    <div class="header">
-                        <div class="rating">
-                            <p><b>Seher</b> rated it</p>
-                            <div class="rating-stars">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
-                            </div>
-                        </div>
-                        <p class="date text-light">
-                            <span class="hide-s">5 October 2019</span>
-                            <span class="hide-xxl show-s">5/10/19</span>
-                        </p>
-                    </div>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                    </div>
-                </div>
-                <div class="review">
-                    <div class="header">
-                        <div class="rating">
-                            <p><b>Matti</b> rated it</p>
-                            <div class="rating-stars">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img src="media/assets/rating-star.svg" alt="Star Icon">
-                                <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
-                                <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
-                            </div>
-                        </div>
-                        <p class="date text-light">
-                            <span class="hide-s">2 October 2019</span>
-                            <span class="hide-xxl show-s">2/10/19</span>
-                        </p>
-                    </div>
-                    <div class="description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.<br><br>
-                        
-                        Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore <a class="read-more text-light" href="#">… read more</a></p>
-                    </div>
-                </div> -->
                 <a class="btn" href="#">
                     <img src="media/assets/plus-icon.svg" alt="Plus Icon">
                     Load More Reviews
@@ -210,5 +157,17 @@
     <!-- <footer>
         <p>&copy; 2019 BetterReads&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">Impressum</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">Datenschutz</a></p>
     </footer> -->
+    <script type="text/javascript">
+        const updateRating = (ratingId) => {
+            // Inject star rating value into the hidden number input with the id 'number-rating'
+            document.querySelector('#number-rating').value = parseInt(ratingId.split('-')[2]);
+            // Remove the class 'selected' from all divs within the '.number-rating' div
+            document.querySelectorAll(`.number-rating > .star-icon`).forEach((item, index) => {
+                document.getElementById(`number-rating-${index+1}`).classList.remove('selected');
+            })
+            // Add the class 'selected' to the star that was clicked by the user (highlights n amount of stars, where n is the rating clicked by the user)
+            document.getElementById(ratingId).classList.add('selected');
+        }
+    </script>
 </body>
 </html>

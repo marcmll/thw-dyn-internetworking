@@ -26,6 +26,12 @@ p {
         color: #B6BCC1;
     }
 
+    p.login-error {
+        padding: 5px 0 0 5px;
+        color: #ff7675;
+        font-size: 14px;
+    }
+
 h1, h2, h3, h4, h5, h6, p, a {
     padding: 0;
     margin: 0;
@@ -50,7 +56,16 @@ b {
     font-weight: 600;
 }
 
+input:focus, textarea:focus {
+    outline: none;
+}
+
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #B6BCC1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+::-webkit-textarea-placeholder { /* WebKit, Blink, Edge */
     color: #B6BCC1;
     font-family: 'Inter', sans-serif;
     font-weight: 300;
@@ -77,6 +92,16 @@ b {
    font-family: 'Inter', sans-serif;
    font-weight: 300;
 }
+:-ms-textarea-placeholder { /* Internet Explorer 10-11 */
+    color: #B6BCC1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+ }
+ ::-ms-textarea-placeholder { /* Microsoft Edge */
+    color: #B6BCC1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+ }
 
 ::placeholder { /* Most modern browsers support this now. */
    color: #B6BCC1;
@@ -175,6 +200,7 @@ main {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
 .book-details {
@@ -369,19 +395,55 @@ main {
     }
 
         .book-reviews > form > input {
+            padding: 9px 15px;
             margin: 0;
-            width: calc(50% - 5px);
-            height: 30px;
-            border: 1px solid #ccc;
+            width: calc(100% - 160px);
+            height: 36px;
+            border: 1px solid #DEE2E6;
+            border-radius: 4px;
+            font-size: 16px;
             box-sizing: border-box;
         }
 
+        .book-reviews > form > .number-rating {
+            width: 140px;
+            height: 36px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row-reverse;
+            align-items: center;
+        }
+        
+            .book-reviews > form > .number-rating > .star-icon {
+                padding: 5px;
+                cursor: pointer;
+                opacity: 0.3;
+                filter: saturate(0%);
+                line-height: 0;
+            }
+
+                .book-reviews > form > .number-rating > .star-icon > img {
+                    padding: 0;
+                    height: 19px;
+                    width: auto;
+                    line-height: 0;
+                }
+
+                .book-reviews > form > .number-rating > .star-icon.selected, .book-reviews > form > .number-rating > .star-icon.selected ~ div, .book-reviews > form > .number-rating > .star-icon:hover, .book-reviews > form > .number-rating > .star-icon:hover ~ div {
+                    opacity: 1;
+                    filter: saturate(100%);
+                    transition: opacity 0.15s linear;
+                }
+
         .book-reviews > form > textarea {
+            padding: 9px 15px;
             margin: 15px 0 0 0;
             width: 100%;
             min-height: 100px;
             max-height: 200px;
-            border: 1px solid #ccc;
+            border: 1px solid #DEE2E6;
+            border-radius: 4px;
+            font-size: 16px;
             resize: vertical;
             box-sizing: border-box;
         }
@@ -461,6 +523,36 @@ main {
         .book-reviews > a.btn img {
             margin: 0 10px 0 0;
         }
+
+.login-form {
+    padding: 30px 0 0 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+    .login-form > input {
+        padding: 11px 15px;
+        width: 300px;
+        border: 0px;
+        background-color: white;
+        font-size: 16px;
+        line-height: 16px;
+    }
+
+    .login-form button {
+        padding: 11px 0;
+        margin: 0 0 0 15px;
+        width: 100px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 16px;
+        background-color: #DEE2E6;
+        color: #495057;
+        font-family: 'Inter var', sans-serif;
+        border: 0px;
+        cursor: pointer;
+    }
 
 /* Responsive Show / Hide */
 
