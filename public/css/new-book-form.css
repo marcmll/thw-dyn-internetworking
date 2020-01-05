@@ -1,0 +1,114 @@
+/* Book Upload Form Page Styling */
+
+.book-upload-form {
+    padding: 30px;
+    margin: 40px 0 0 0;
+    width: calc(100% - 50px);
+    background-color: white;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+    .book-upload-form > p.errorMsg {
+        margin: 0 0 15px 0;
+        width: 100%;
+        color: var(--light-red-button-color);
+        font-size: 16px;
+    }
+
+    .book-upload-form .form-input {
+        position: relative;
+    }
+
+    .book-upload-form .form-input:nth-of-type(n + 3) {
+        margin: 20px 0 0 0;
+    }
+
+    .book-upload-form .form-input.col-6 {
+        width: calc(50% - 10px);
+    }
+
+    .book-upload-form .form-input.col-12 {
+        width: 100%;
+    }
+
+    .book-upload-form .form-input.right-align {
+        padding: 0 0 0 calc(100% - 120px);
+        width: auto;
+    }
+
+        .book-upload-form .form-input > input {
+            padding: 11px 15px;
+            margin: 0;
+            width: 100%;
+            height: 40px;
+            border: var(--main-border);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .book-upload-form .form-input > textarea {
+            padding: 11px 15px;
+            margin: 0;
+            width: 100%;
+            min-height: 160px;
+            height: 240px;
+            max-height: 400px;
+            resize: vertical;
+            border: var(--main-border);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .book-upload-form .form-input > input.error, .book-upload-form .form-input > textarea.error {
+            border: var(--error-border);
+        }
+
+        .book-upload-form .form-input > input.error ~ label, .book-upload-form .form-input > textarea.error ~ label {
+            color: var(--light-red-button-color);
+        }
+
+        .book-upload-form .form-input > label {
+            padding: 2px 7px;
+            color: #B6BCC1;
+            background-color: white;
+            position: absolute;
+            top: 9px;
+            left: 8px;
+            transition: font-size 0.2s, top 0.2s ease 0s;
+            pointer-events: none;
+        }
+
+        .book-upload-form .form-input > input:focus ~ label, .book-upload-form .form-input > input:valid ~ label, .book-upload-form .form-input > textarea:focus ~ label, .book-upload-form .form-input > textarea:valid ~ label {
+            font-size: 10px;
+            top: -6px;
+        }
+
+        .book-upload-form .form-input > button {
+            padding: 11px 15px;
+            margin: 0;
+            width: 120px;
+            height: 40px;
+            border: 0px;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .book-upload-form .form-input > p {
+            display: none;
+        }
+
+        .book-upload-form .form-input > p.errorMsg {
+            padding: 0px;
+            margin: 10px 0 0 2px;
+            color: var(--light-red-button-color);
+            font-size: 14px;
+            line-height: 14px;
+            display: inline-block !important;
+        }

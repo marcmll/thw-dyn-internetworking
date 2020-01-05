@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Title -->
+    <title>BetterReads &raquo; Page Not Found</title>
+    <base href="/">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/global.css">
+    <style>
+        h1 {
+            width: 100%;
+        }
+
+        p {
+            margin: 30px 0 0 0;
+        }
+
+        a {
+            font-weight: 600;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <header>
+        <div class="container">
+            <a href="/">
+                <img src="media/assets/logo.svg" alt="BetterReads logo" draggable="false">
+            </a>
+            <nav>
+                <!-- Search Form -->
+                <form class="search" action="/dbSearch" method="POST">
+                    <img class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
+                    <input type="text" placeholder="Search Books by Title or ISBN" name="searchQuery" autocomplete="off"/>
+                    <button class="btn" id="nav-search" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>404: No Book Found</h1>
+            <!-- Display the error message passed into the view engine -->
+            <p><%- errorMsg %></p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2020 BetterReads&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/terms">Terms</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/privacy">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>

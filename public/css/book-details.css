@@ -1,207 +1,4 @@
-/* Font Import */
-@import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap');
-@import url('https://rsms.me/inter/inter.css');
-html {
-    font-family: 'Inter', sans-serif;
-}
-@supports (font-variation-settings: normal) {
-    html { font-family: 'Inter var', sans-serif; }
-}
-
-/* Tag Styling */
-html, body {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-}
-
-p {
-    font-size: 18px;
-    line-height: 28px;
-    color: #495057;
-}
-
-    p.text-light, a.text-light {
-        color: #B6BCC1;
-    }
-
-    p.login-error {
-        padding: 5px 0 0 5px;
-        color: #ff7675;
-        font-size: 14px;
-    }
-
-h1, h2, h3, h4, h5, h6, p, a {
-    padding: 0;
-    margin: 0;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Merriweather', serif;
-}
-
-h2 {
-    font-size: 32px;
-    font-weight: 400;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    font-weight: inherit;
-}
-
-b {
-    font-weight: 600;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-}
-
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: #B6BCC1;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-}
-::-webkit-textarea-placeholder { /* WebKit, Blink, Edge */
-    color: #B6BCC1;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color: #B6BCC1;
-   opacity: 1;
-   font-family: 'Inter', sans-serif;
-   font-weight: 300;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color: #B6BCC1;
-   opacity: 1;
-   font-family: 'Inter', sans-serif;
-   font-weight: 300;
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color: #B6BCC1;
-   font-family: 'Inter', sans-serif;
-   font-weight: 300;
-}
-::-ms-input-placeholder { /* Microsoft Edge */
-   color: #B6BCC1;
-   font-family: 'Inter', sans-serif;
-   font-weight: 300;
-}
-:-ms-textarea-placeholder { /* Internet Explorer 10-11 */
-    color: #B6BCC1;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
- }
- ::-ms-textarea-placeholder { /* Microsoft Edge */
-    color: #B6BCC1;
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
- }
-
-::placeholder { /* Most modern browsers support this now. */
-   color: #B6BCC1;
-   font-family: 'Inter', sans-serif;
-   font-weight: 300;
-}
-
-header {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-}
-
-    header .container {
-        padding: 23px 0 0 0;
-        width: 100%;
-        max-width: 1400px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    header img {
-        width: 180px;
-        height: 44px;
-        background-color: #DEE2E6;
-        display: inline-block;
-    }
-
-    header nav {
-        height: auto;
-        display: inline-block;
-    }
-
-        header nav .search {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-            header nav .search input {
-                margin: 0 15px 0 0;
-                padding: 11px 20px 12px 49px;
-                width: 480px;
-                border: 0px;
-                font-family: 'Inter', sans-serif;
-                font-weight: 300;
-                font-size: 18px;
-                line-height: 18px;
-                color: #B6BCC1;
-                background-color: white;
-            }
-
-            header nav .search .search-icon {
-                background: none;
-                height: 18px;
-                width: auto;
-                position: absolute;
-                top: 13px;
-                left: 15px;
-            }
-
-            header nav .search a.btn {
-                padding: 13px 0 13px 0;
-                font-size: 18px;
-                line-height: 18px;
-                text-align: center;
-                width: 100px;
-                color: #495057;
-                background-color: #DEE2E6;
-                display: inline-block;
-            }
-
-/* Class Styling */
-
-.background {
-    width: 100%;
-    height: 520px;
-    background-color: #F5F7FA;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-main {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-    main .container {
-        padding: 80px 0 60px 0;
-        width: 100%;
-        max-width: 1400px;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
+/* Book Details Page Styling */
 
 .book-details {
     width: 680px;
@@ -211,8 +8,8 @@ main {
         padding: 30px 40px 30px 30px;
         width: calc(100% - 70px);
         height: auto;
-        background-color: white;
-        box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+        background-color: var(--main-bg-color);
+        box-shadow: var(--main-box-shadow);
         display: grid;
         grid-column-gap: 30px;
         grid-row-gap: 20px;
@@ -234,8 +31,8 @@ main {
                 height: 100%;
                 object-fit: cover;
                 object-position: 50% 50%;
-                box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
-                background-color: white;
+                box-shadow: var(--main-box-shadow);
+                background-color: var(--main-bg-color);
             }
 
         .book-details .book-highlights .book-title {
@@ -283,23 +80,17 @@ main {
             grid-area: book-share;
         }
 
-            .book-details .book-highlights .book-share a.btn-highlight {
+            .book-details .book-highlights .book-share a.btn-light-blue {
                 width: 100%;
                 height: 36px;
                 font-size: 14px;
                 line-height: 14px;
-                color: #2368A2;
-                background-color: #EFF8FF;
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
 
-                .book-details .book-highlights .book-share a.btn-highlight:hover {
-                    background-color: rgb(227, 242, 255);
-                }
-
-                .book-details .book-highlights .book-share a.btn-highlight img {
+                .book-details .book-highlights .book-share a.btn-light-blue img {
                     margin: 0 10px 0 0;
                 }
 
@@ -323,7 +114,7 @@ main {
 
                 .book-details .book-highlights .book-meta .meta-item p {
                     font-size: 14px;
-                    color: #495057;
+                    color: var(--main-text-color);
                 }
 
             .book-details .book-highlights .book-meta .meta-item:first-child {
@@ -353,7 +144,7 @@ main {
 
                 .book-details .book-description .book-meta .meta-item p {
                     font-size: 14px;
-                    color: #495057;
+                    color: var(--main-text-color);
                 }
 
             .book-details .book-description .book-meta .meta-item:first-child {
@@ -372,37 +163,82 @@ main {
         justify-content: space-between;
     }
 
-        .book-reviews .header .btn-cta {
+        .book-reviews .header .btn-blue {
             padding: 11px 20px;
-            color: white;
-            background-color: #3183C8;
         }
-
-            .book-reviews .header .btn-cta:hover {
-                background-color: #2C75B4;
-            }
 
     .book-reviews > form {
         margin: 20px 0 0 0;
         padding: 30px 35px 30px 30px;
         width: calc(100% - 65px);
-        background-color: white;
-        border: 1px solid #E5E8EB;
+        background-color: var(--main-bg-color);
+        border: var(--main-border);
         display: inline-flex;
         align-items: flex-start;
         justify-content: space-between;
         flex-wrap: wrap;
     }
 
-        .book-reviews > form > input {
+        .book-reviews > form > .form-input {
+            width: calc(100% - 160px);
+            position: relative;
+        }
+
+        .book-reviews > form > .form-input.textarea {
+            width: 100%;
+        }
+
+        .book-reviews > form > .form-input > input {
             padding: 9px 15px;
             margin: 0;
-            width: calc(100% - 160px);
+            width: 100%;
             height: 36px;
-            border: 1px solid #DEE2E6;
+            border: var(--main-border);
             border-radius: 4px;
             font-size: 16px;
             box-sizing: border-box;
+        }
+
+        .book-reviews > form > .form-input > input.error, .book-reviews > form > .form-input > textarea.error {
+            border: var(--error-border);
+        }
+
+        .book-reviews > form > .form-input > input.error ~ label, .book-reviews > form > .form-input > textarea.error ~ label {
+            color: var(--light-red-button-color);
+        }
+
+        .book-reviews > form > .form-input > label {
+            padding: 2px 7px;
+            color: #B6BCC1;
+            background-color: white;
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            transition: font-size 0.2s, top 0.2s ease 0s;
+            pointer-events: none;
+        }
+
+        .book-reviews > form > .form-input > input:focus ~ label, .book-reviews > form > .form-input > input:valid ~ label {
+            font-size: 10px;
+            top: -8px;
+        }
+
+        .book-reviews > form > .form-input > textarea:focus ~ label, .book-reviews > form > .form-input > textarea:valid ~ label {
+            font-size: 10px;
+            top: 7px;
+        }
+
+        .book-reviews > form > .form-input > p {
+            display: none;
+        }
+
+        .book-reviews > form > .form-input > p.errorMsg {
+            padding: 0px;
+            margin: 10px 0 0 2px;
+            color: var(--light-red-button-color);
+            font-size: 14px;
+            line-height: 14px;
+            display: inline-block !important;
         }
 
         .book-reviews > form > .number-rating {
@@ -412,7 +248,31 @@ main {
             justify-content: space-between;
             flex-direction: row-reverse;
             align-items: center;
+            position: relative;
         }
+
+        .book-reviews > form > .number-rating.error {
+            margin-bottom: 25px;
+        }
+
+            .book-reviews > form > .number-rating > p {
+                display: none;
+            }
+
+            .book-reviews > form > .number-rating > p.errorMsg {
+                width: 100%;
+                padding: 0px;
+                margin: 10px 0 0 0;
+                color: var(--light-red-button-color);
+                font-size: 14px;
+                line-height: 14px;
+                display: block !important;
+                position: absolute;
+                top: 36px;
+                left: 0;
+                order: -1;
+
+            }
         
             .book-reviews > form > .number-rating > .star-icon {
                 padding: 5px;
@@ -435,30 +295,65 @@ main {
                     transition: opacity 0.15s linear;
                 }
 
-        .book-reviews > form > textarea {
+        .book-reviews > form > .form-input > textarea {
             padding: 9px 15px;
             margin: 15px 0 0 0;
             width: 100%;
-            min-height: 100px;
-            max-height: 200px;
-            border: 1px solid #DEE2E6;
+            min-height: 150px;
+            height: 190px;
+            max-height: 250px;
+            border: var(--main-border);
             border-radius: 4px;
             font-size: 16px;
             resize: vertical;
             box-sizing: border-box;
         }
 
+        .book-reviews > form > .form-input.textarea > label {
+            top: 23px;
+            left: 8px;
+        }
+
+        .book-reviews > form > .privacy-policy {
+            margin: 15px 0 0 2px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+            .privacy-policy input {
+                margin: 0 10px 0 0;
+            }
+
+            .privacy-policy label {
+                color: var(--light-text-color);
+                font-size: 12px;
+            }
+
+                .privacy-policy label > a {
+                    text-decoration: underline;
+                }
+
         .book-reviews > form > button {
             margin: 15px 0 0 0;
-            width: 100%;
+            width: 180px;
+            height: 36px;
+            font-size: 16px;
+            color: white;
+            background-color: var(--main-blue-button-bg-color);
+            border: none;
+            border-radius: 4px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
 
     .book-reviews .review {
         margin: 20px 0 0 0;
         padding: 30px 35px 30px 30px;
         width: calc(100% - 65px);
-        background-color: white;
-        border: 1px solid #E5E8EB;
+        background-color: var(--main-bg-color);
+        border: var(--main-border);
         display: inline-block;
     }
 
@@ -479,17 +374,13 @@ main {
             }
 
                 .book-reviews .review > .header .rating p {
-                    color: #212429
+                    color: var(--main-title-color);
                 }
 
                 .book-reviews .review > .header .rating .rating-stars {
                     margin: 0 0 0 10px;
                     line-height: 17px;
                 }
-
-                    .book-reviews .review > .header .rating .rating-stars img {
-                        /* margin: 0 2px 0 0; */
-                    }
 
                     .book-reviews .review > .header .rating .rating-stars img.faded {
                         opacity: 0.3;
@@ -508,119 +399,19 @@ main {
         padding: 12px 0;
         margin: 20px 0 0 0;
         width: 100%;
-        background-color: #F1F3F5; 
-        color: #495057;
         font-size: 14px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .book-reviews > a.btn:hover {
-        background-color: rgb(232, 237, 240); 
-    }
-
         .book-reviews > a.btn img {
             margin: 0 10px 0 0;
         }
 
-.login-form {
-    padding: 30px 0 0 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-    .login-form > input {
-        padding: 11px 15px;
-        width: 300px;
-        border: 0px;
-        background-color: white;
-        font-size: 16px;
-        line-height: 16px;
-    }
-
-    .login-form button {
-        padding: 11px 0;
-        margin: 0 0 0 15px;
-        width: 100px;
-        text-align: center;
-        font-size: 16px;
-        line-height: 16px;
-        background-color: #DEE2E6;
-        color: #495057;
-        font-family: 'Inter var', sans-serif;
-        border: 0px;
-        cursor: pointer;
-    }
-
-/* Responsive Show / Hide */
-
-.show-xxl {
-    display: inline !important;
-}
-
-.hide-xxl {
-    display: none !important;
-}
-
-
-@media all and (max-width: 1600px){
-
-    p {
-        font-size: 16px;
-        line-height: 26px;
-    }
-
-    h2 {
-        font-size: 28px;
-    }
-
-    header .container {
-        padding: 18px 0 0 0;
-        max-width: 1100px;
-    }
-    
-        header img {
-            width: 160px;
-            height: 38px;
-        }
-    
-                header nav .search input {
-                    margin: 0 15px 0 0;
-                    padding: 9px 15px 9px 44px;
-                    width: 420px;
-                    font-size: 16px;
-                    line-height: 16px;
-                }
-    
-                header nav .search .search-icon {
-                    height: 16px;
-                    top: calc(50% - 8px);
-                    left: 15px;
-                }
-    
-                header nav .search a.btn {
-                    padding: 11px 0 11px 0;
-                    font-size: 16px;
-                    line-height: 16px;
-                }
-
-    .background {
-        height: 440px;
-    }
-
-    .show-xl {
-        display: inline !important;
-    }
-    .hide-xl {
-        display: none !important;
-    }
-
-    main .container {
-        padding: 60px 0;
-        max-width: 1100px;
-    }
+/* Responsive Styling */
+/* 1241px - 1600px */
+@media all and (max-width: 1600px) {
 
     .book-details {
         width: 550px;
@@ -734,61 +525,8 @@ main {
 
 }
 
-@media all and (max-width: 1240px){
-
-    p {
-        font-size: 14px;
-        line-height: 22px;
-    }
-
-    h2 {
-        font-size: 24px;
-    }
-
-    .background {
-        height: 390px;
-    }
-
-    .show-l {
-        display: inline !important;
-    }
-    .hide-l {
-        display: none !important;
-    }
-
-    header .container {
-        max-width: 900px;
-    }
-    
-        header img {
-            width: 140px;
-            height: 32px;
-        }
-    
-                header nav .search input {
-                    margin: 0 10px 0 0;
-                    padding: 8px 15px 7px 34px;
-                    width: 420px;
-                    font-size: 14px;
-                    line-height: 14px;
-                }
-    
-                header nav .search .search-icon {
-                    height: 14px;
-                    top: calc(50% - 7px);
-                    left: 10px;
-                }
-    
-                header nav .search a.btn {
-                    padding: 9px 0 9px 0;
-                    font-size: 14px;
-                    line-height: 14px;
-                }
-
-    main .container {
-        padding: 54px 0 60px 0;
-        max-width: 900px;
-    }
+/* 1025px - 1240px */
+@media all and (max-width: 1240px) {
 
     .book-details {
         width: 450px;
@@ -918,52 +656,12 @@ main {
             .book-reviews > a.btn img {
                 margin: 0 8px 0 0;
             }
+
 }
 
-@media all and (max-width: 1024px){
-    .show-m {
-        display: inline !important;
-    }
-    .hide-m {
-        display: none !important;
-    }
+/* 768px - 1024px */
+@media all and (max-width: 1024px) {
 
-    .background {
-        height: 250px;
-    }
-
-    header .container {
-        max-width: 700px;
-    }
-    
-        header img {
-            height: 30px;
-        }
-    
-                header nav .search input {
-                    margin: 0 8px 0 0;
-                    padding: 6px 15px 5px 36px;
-                    width: 350px;
-                }
-    
-                header nav .search .search-icon {
-                    height: 14px;
-                    top: calc(50% - 6px);
-                    left: 12px;
-                }
-    
-                header nav .search a.btn {
-                    padding: 7px 0;
-                    font-size: 14px;
-                    line-height: 16px;
-                }
-    
-    main .container {
-        padding: 40px 0 60px 0;
-        max-width: 650px;
-        flex-wrap: wrap;
-    }
-    
     .book-details {
         padding: 0 0 40px 0;
         width: 100%;
@@ -1063,20 +761,23 @@ main {
 
 }
 
-@media all and (max-width: 768px){
-    .show-s {
-        display: inline !important;
-    }
-    .hide-s {
-        display: none !important;
-    }
+/* 425px - 767px */
+@media all and (max-width: 767px) {
+
+    
+
 }
 
-@media all and (max-width: 375px){
-    .show-xs {
-        display: inline !important;
-    }
-    .hide-xs {
-        display: none !important;
-    }
+/* 375px - 424px */
+@media all and (max-width: 424px) {
+
+    
+
+}
+
+/* 320px - 374px */
+@media all and (max-width: 374px) {
+
+    
+
 }

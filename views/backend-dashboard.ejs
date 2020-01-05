@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Title -->
+    <title>BetterReads &raquo; Backend Dashboard</title>
+    <base href="/">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/css/backend-dashboard.css">
+</head>
+<body>
+    <div class="background"></div>
+    <header>
+        <div class="container">
+            <a href="/backend">
+                <img src="media/assets/logo.svg" alt="BetterReads logo" draggable="false">
+            </a>
+            <nav>
+                <a href="./backend/apiSearch" class="btn">
+                    <img src="/media/assets/submit-icon.svg" alt="Submit Icon">
+                    Submit Book
+                </a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Dashboard</h2>
+            <form class="search-form" action="/backend/search" method="POST">
+                <img class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
+                <input type="text" placeholder="Search Books by Title or ISBN" name="searchQuery">
+                <button type="submit" class="btn">Search</button>
+            </form>
+                <form class="search-filters" action="/backend/dashboard" method="GET">
+                    <!-- Display the amount of books in the database / the amount of books found in the search -->
+                    <p><% if (typeof search == 'undefined') { %>Total of<% } else { %>Found <% } %> <b><%= books.length %></b> Books</p>
+                    <!-- If search request was triggered, save search query in hidden input so it can be applied to a filter -->
+                    <% if (typeof search != 'undefined') { %>
+                        <input type="hidden" value="<%= search %>" name="search">
+                    <% } %>
+                    <!-- Save next filter -->
+                    <input type="hidden" value="<%= (currentFilter.id + 1) %>" name="nextFilter">
+                    <button type="submit">Sorted by: <span><%= currentFilter.name %></span></button>
+                </form>
+            <div class="search-result-container">
+                <!-- For each of the books found, display a div with relevant book information
+                and options to edit and delete the book, as well as the option to set book as editor pick -->
+                <% for (let i = 0; i < books.length; i++) { %>
+                    <div class="search-result">
+                        <img src="<%= books[i].bookMediaLink %>" alt="book cover">
+                        <div class="search-result-book-data">
+                            <p class="title"><a href="./book/<%= books[i].bookId %>"><%= books[i].title %></a></p>
+                            <p class="author">
+                                <!-- For each author in the array, display the authors seperated by a comma -->
+                                <% for (let j = 1; j <= books[i].authors.length; j++) { %>
+                                    <%= books[i].authors[(j - 1)] %><% if(j !== (books[i].authors.length)) { %>,<% } %>
+                                <% } %>
+                            </p>
+                            <p class="isbn">ISBN: <%= books[i].isbn %></p>
+                        </div>
+                        <div class="search-result-button-section">
+                            <!-- Edit Book Form / Button -->
+                            <form class="dashboard-btn edit" action="/backend/editBook" method="POST">
+                                <input type="hidden" value="<%= books[i].bookId %>" name="bookId"/>
+                                <button type="submit" class="btn btn-light-blue">
+                                    <img class="edit-icon" src="media/assets/edit-icon.svg" alt="Edit Icon">
+                                    Edit Book
+                                </button>
+                            </form>
+                            <!-- Delete Book Form / Button -->
+                            <form class="dashboard-btn delete" action="/backend/deleteBook" method="POST">
+                                <input type="hidden" value="<%= books[i]._id %>" name="bookId"/>
+                                <button type="submit" class="btn btn-light-red">
+                                    <img class="trash-icon" src="media/assets/trash-icon.svg" alt="Trash Icon">
+                                    Delete Book
+                                </button>
+                            </form>
+                            <!-- Toggle Editor Pick Form / Button -->
+                            <form class="dashboard-btn editorPick" action="/backend/toggleEditorPick" method="POST">
+                                <input type="hidden" value="<%= books[i]._id %>" name="bookId"/>
+                                <input type="hidden" value="<%= books[i].editorPick %>" name="editorPick"/>
+                                <!-- Based on editor pick boolean, alter the button text and color -->
+                                <% if (books[i].editorPick) { %>
+                                    <button type="submit" class="btn btn-light-red">
+                                        <img class="star-icon" src="media/assets/star-icon-red.svg" alt="Star Icon">
+                                        Remove Editor Pick
+                                    </button>
+                                <% } else { %>
+                                    <button type="submit" class="btn btn-light-blue">
+                                        <img class="star-icon" src="media/assets/star-icon-blue.svg" alt="Star Icon">
+                                        Set Editor Pick
+                                    </button>
+                                <% } %>
+                            </form>
+                        </div>
+                    </div>
+                <% } %>
+                <!-- If no books are in the database, or no books are returned during a search, show an error message notifying the user -->
+                <% if (books.length <= 0) { %>
+                    <p>No books have been found<% if (typeof search != 'undefined') { %> for the search "<%= search %>"<% } %>.</p>
+                <% } %>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2020 BetterReads&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/terms">Terms</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/privacy">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/backend/logout">Logout</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Title -->
+    <title>BetterReads &raquo; Backend API Results</title>
+    <base href="/">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/css/backend-dashboard.css">
+    <style>
+        .search-result-container {
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <header>
+        <div class="container">
+            <a href="/backend">
+                <img src="media/assets/logo.svg" alt="BetterReads logo" draggable="false">
+            </a>
+            <nav>
+                <a href="./backend/editBook" class="btn">
+                    <img src="/media/assets/submit-icon.svg" alt="Submit Icon">
+                    New Book
+                </a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h2>API Search</h2>
+            <form class="search-form" action="/backend/apiSearch" method="POST">
+                <img class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
+                <input type="text" placeholder="Seach Books by Title" name="searchQuery" autocomplete="off">
+                <button type="submit" class="btn">Search</button>
+            </form>
+            <div class="search-result-container">
+                <!-- For each of the api results found, display a form with relevant information
+                and the goodread bookid required to make a detailed api request -->
+                <% for (let i = 0; i < books.length; i++) { %>
+                    <form class="search-result" action="/backend/apiFormFill" method="POST" onclick="this.submit();">
+                        <input type="hidden" name="bookId" value="<%= books[i].bookId %>">
+                        <img src="<%= books[i].bookMediaLink %>" alt="book cover">
+                        <div class="search-result-book-data">
+                            <p class="title"><%= books[i].title %></p>
+                            <p class="author">
+                                <%= books[i].author %>
+                            </p>
+                        </div>
+                    </form>
+                <% } %>
+                <!-- If no books are found for the search query, display an error message informing the user -->
+                <% if (books.length <= 0) { %>
+                    <p>The search for "<%= search %>" returned no results, try again.</p>
+                <% } %>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

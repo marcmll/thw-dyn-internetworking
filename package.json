@@ -28,7 +28,10 @@
     "body-parser": "^1.19.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
-    "mongoose": "^5.7.6"
+    "express-session": "^1.17.0",
+    "mongoose": "^5.7.6",
+    "xhr-request": "^1.1.0",
+    "xml-objtree": "^0.24.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.3"

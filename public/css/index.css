@@ -1,0 +1,140 @@
+/* Home Page Styling */
+
+.container:not(.dark-bg) section:first-child {
+    padding-top: 0px !important;
+}
+
+section.editor-picks {
+    padding: 0 0 97px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    section.editor-picks .description {
+        max-width: 480px;
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+        section.editor-picks .description > h1 {
+            padding: 0;
+            margin: 0 0 25px 0;
+            display: block;
+        }
+
+        section.editor-picks .description > p {
+            padding: 0;
+            margin: 0;
+            font-size: 20px;
+            line-height: 30px;
+        }
+
+    section.editor-picks .slider {
+        min-width: 780px;
+        max-width: 780px;
+        overflow: hidden;
+        display: flex;
+    }
+
+        section.editor-picks .slider a > img {
+            width: 180px;
+            height: 276px;
+            object-fit: cover;
+            box-shadow: var(--large-box-shadow);
+        }
+
+        section.editor-picks .slider a:not(:first-child) {
+            margin: 0 0 0 20px;
+        }
+
+
+section.wide-row {
+    padding: 80px 0 64px 0;
+    width: 100%;
+}
+
+    section.wide-row > .book-row {
+        padding: 40px 0 0 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+        section.wide-row > .book-row > .row-item {
+            width: 420px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        section.wide-row > .book-row > .row-item a {
+            width: auto;
+            display: inline-block;
+        }
+
+            section.wide-row > .book-row > .row-item img {
+                width: 180px;
+                height: 276px;
+                object-fit: cover;
+                box-shadow: var(--main-box-shadow);
+            }
+
+        section.wide-row > .book-row > .row-item > .book-info {
+            width: calc(100% - 210px);
+        }
+
+            section.wide-row > .book-row > .row-item > .book-info p {
+                margin: 0 0 15px 0;
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 24px;
+                color: var(--main-title-color)
+            }
+
+            section.wide-row > .book-row > .row-item > .book-info p.author {
+                margin: 0 0 20px 0;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 20px;
+                color: var(--main-text-color)
+            }
+
+            section.wide-row > .book-row > .row-item > .book-info > .star-rating img {
+                padding: 0;
+                margin: 0 2px 0 0;
+                width: auto;
+                height: 20px;
+                box-shadow: none;
+            }
+
+            section.wide-row > .book-row > .row-item > .book-info >  .star-rating img.faded {
+                opacity: 0.3;
+            }
+
+
+section.dense-row {
+    padding: 80px 0 64px 0;
+    width: 100%;
+}
+
+    section.dense-row > .book-row {
+        padding: 40px 0 0 0;
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+    }
+
+        section.dense-row > .book-row img {
+            width: 180px;
+            height: 276px;
+            object-fit: cover;
+            box-shadow: var(--main-box-shadow);
+        }
+
+        section.dense-row > .book-row a:not(:first-child) {
+            margin: 0 0 0 calc((100% - (7 * 180px)) / 6);
+        }

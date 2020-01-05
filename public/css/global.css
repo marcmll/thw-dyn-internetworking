@@ -1,0 +1,610 @@
+/* Font Import */
+@import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap');
+@import url('https://rsms.me/inter/inter.css');
+html {
+    font-family: 'Inter', sans-serif;
+}
+@supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+}
+
+/* Variables */
+
+:root {
+    /* Background Colors */
+    --main-bg-color: #FFFFFF;
+    --alt-bg-color: #F5F7FA;
+    --dark-bg-color: #DEE2E6;
+
+    /* Text Colors */
+    --main-text-color: #495057;
+    --grey-text-color: #858D96;
+    --light-text-color: #B6BCC1;
+    --main-title-color: #212429;
+    --blue-text-color: #0576FF;
+
+    /* Button Background Colors */
+    --main-button-bg-color: #DEE2E6;
+    --dark-button-bg-color: #E8EDF0;
+    --light-blue-button-bg-color: #E9F2FF;
+    --main-blue-button-bg-color: #3183C8;
+    --dark-blue-button-bg-color: #2C75B4;
+    --light-red-button-bg-color: #FDEBEB;
+    --main-red-button-bg-color: #F26A61;
+    --dark-red-button-bg-color: #EB251E;
+    --light-green-button-bg-color: #E3FCEC;
+    --main-green-button-bg-color: #74D9A0;
+    --dark-green-button-bg-color: #269D57;
+
+    /* Button Text Colors */
+    --main-button-color: #495057;
+    --light-blue-button-color: #0576FF;
+    --light-red-button-color: #F26A61;
+    --light-green-button-color: #259B56;
+    --dark-button-color: #FFFFFF;
+
+    /* Border Color */
+    --main-border: 1px solid #DEE2E6;
+    --error-border: 1px solid var(--light-red-button-color);
+
+    /* Box Shadow */
+    --main-box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    --large-box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+
+    /* Container Max Width Variables */
+    --max-container-xxl: 1400px;
+    --max-container-xl: 1100px;
+    --max-container-l: 900px;
+    --max-container-m: 650px;
+}
+
+/* Tag / Class Styling */
+
+html, body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+p {
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--main-text-color);
+}
+
+    p.text-light, a.text-light {
+        color: var(--light-text-color);
+    }
+
+    p.text-red {
+        color: var(--light-red-button-color);
+    }
+
+    p.text-blue {
+        color: var(--blue-text-color);
+    }
+
+a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: inherit;
+}
+
+b {
+    font-weight: 600;
+}
+
+h1, h2, h3, h4, h5, h6, p, a {
+    padding: 0;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+}
+
+h1 {
+    font-size: 38px;
+    font-weight: 400;
+    display: block;
+}
+
+h2 {
+    font-size: 32px;
+    font-weight: 400;
+}
+
+/* Button Styling */
+
+.btn {
+    color: var(--main-button-color);
+    background-color: var(--main-button-bg-color);
+}
+
+.btn-light-blue {
+    color: var(--light-blue-button-color);
+    background-color: var(--light-blue-button-bg-color);
+}
+
+.btn-blue {
+    color: var(--dark-button-color);
+    background-color: var(--main-blue-button-bg-color);
+}
+
+.btn-blue:hover {
+    background-color: var(--dark-blue-button-bg-color);
+}
+
+.btn-light-red {
+    color: var(--light-red-button-color);
+    background-color: var(--light-red-button-bg-color);
+}
+
+.btn-red {
+    color: var(--dark-button-color);
+    background-color: var(--main-red-button-bg-color);
+}
+
+.btn-red:hover {
+    background-color: var(--dark-red-button-bg-color);
+}
+
+.btn-light-green {
+    color: var(--light-green-button-color);
+    background-color: var(--light-green-button-bg-color);
+}
+
+.btn-green {
+    color: var(--dark-button-color);
+    background-color: var(--main-green-button-bg-color);
+}
+
+.btn-green:hover {
+    background-color: var(--dark-green-button-bg-color);
+}
+
+input:focus, textarea:focus, button:active, button:focus {
+    outline: none;
+}
+
+/* Placeholder Styling */
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: var(--light-text-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+::-webkit-textarea-placeholder { /* WebKit, Blink, Edge */
+    color: var(--light-text-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: var(--light-text-color);
+   opacity: 1;
+   font-family: 'Inter', sans-serif;
+   font-weight: 300;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: var(--light-text-color);
+   opacity: 1;
+   font-family: 'Inter', sans-serif;
+   font-weight: 300;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: var(--light-text-color);
+   font-family: 'Inter', sans-serif;
+   font-weight: 300;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color: var(--light-text-color);
+   font-family: 'Inter', sans-serif;
+   font-weight: 300;
+}
+:-ms-textarea-placeholder { /* Internet Explorer 10-11 */
+    color: var(--light-text-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+ }
+ ::-ms-textarea-placeholder { /* Microsoft Edge */
+    color: var(--light-text-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+ }
+
+::placeholder { /* Most modern browsers support this now. */
+   color: var(--light-text-color);
+   font-family: 'Inter', sans-serif;
+   font-weight: 300;
+}
+
+
+/* Global Background Styling */
+
+.background {
+    width: 100%;
+    height: 520px;
+    background-color: var(--alt-bg-color);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Header / Navigation Styling */
+
+header {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+    header .container {
+        padding: 23px 0 0 0;
+        width: 100%;
+        max-width: var(--max-container-xxl);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    header img {
+        width: auto;
+        height: 44px;
+        display: inline-block;
+    }
+
+    header nav {
+        height: auto;
+        display: inline-block;
+    }
+
+        header nav .btn {
+            padding: 13px 0 13px 0;
+            font-size: 18px;
+            line-height: 18px;
+            width: 160px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            header nav .btn > img {
+                margin: 0 8px 0 0;
+                width: 16px;
+                height: auto;
+            }
+
+        header nav .search {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+            header nav .search input {
+                margin: 0 15px 0 0;
+                padding: 11px 20px 12px 49px;
+                width: 480px;
+                border: 0px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 300;
+                font-size: 18px;
+                line-height: 18px;
+                color: var(--main-text-color);
+                background-color: var(--main-bg-color);
+            }
+
+            header nav .search .search-icon {
+                background: none;
+                height: 18px;
+                width: auto;
+                position: absolute;
+                top: 13px;
+                left: 15px;
+            }
+
+            header nav .search > .btn {
+                width: 100px;
+            }
+
+
+/* Main / Container Styling */
+
+main {
+    padding: 0 0 60px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+    main .container {
+        padding: 80px 0 0 0;
+        width: 100%;
+        max-width: var(--max-container-xxl);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+        main .container.dark-bg {
+            padding: 0 80px;
+            background-color: var(--alt-bg-color);
+        }
+
+
+/* Footer */
+
+footer {
+    padding: 0 0 60px 0;
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+}
+
+    footer p {
+        font-size: 14px;
+        color: var(--grey-text-color);
+    }
+
+    footer a {
+        font-weight: 600;
+    }
+
+/* Responsive Show / Hide Styling */
+
+.show-xxl {
+    display: inline !important;
+}
+
+.hide-xxl {
+    display: none !important;
+}
+
+/* Responsive Styling */
+/* 1241px - 1600px */
+@media all and (max-width: 1600px) {
+
+    p {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    .show-xl {
+        display: inline !important;
+    }
+
+    .hide-xl {
+        display: none !important;
+    }
+
+    .background {
+        height: 440px;
+    }
+
+    header .container {
+        padding: 18px 0 0 0;
+        max-width: var(--max-container-xl);
+    }
+    
+        header img {
+            height: 38px;
+        }
+
+            header nav .btn {
+                padding: 11px 0 11px 0;
+                font-size: 16px;
+                line-height: 16px;
+            }
+    
+                header nav .search input {
+                    margin: 0 15px 0 0;
+                    padding: 9px 15px 9px 44px;
+                    width: 420px;
+                    font-size: 16px;
+                    line-height: 16px;
+                }
+    
+                header nav .search .search-icon {
+                    height: 16px;
+                    top: calc(50% - 8px);
+                    left: 15px;
+                }
+
+    main .container {
+        padding: 60px 0;
+        max-width: var(--max-container-xl);
+    }
+
+}
+
+/* 1025px - 1240px */
+@media all and (max-width: 1240px) {
+
+    p {
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .show-l {
+        display: inline !important;
+    }
+
+    .hide-l {
+        display: none !important;
+    }
+
+    .background {
+        height: 390px;
+    }
+
+    header .container {
+        padding: 18px 0 0 0;
+        max-width: var(--max-container-l);
+    }
+    
+        header img {
+            height: 32px;
+        }
+
+            header nav .btn {
+                padding: 9px 0 9px 0;
+                font-size: 14px;
+                line-height: 14px;
+            }
+
+                header nav .search input {
+                    margin: 0 10px 0 0;
+                    padding: 8px 15px 7px 34px;
+                    width: 420px;
+                    font-size: 14px;
+                    line-height: 14px;
+                }
+
+                header nav .search .search-icon {
+                    height: 14px;
+                    top: calc(50% - 7px);
+                    left: 10px;
+                }
+
+    main .container {
+        padding: 54px 0 60px 0;
+        max-width: var(--max-container-l);
+    }
+
+}
+
+/* 768px - 1024px */
+@media all and (max-width: 1024px) {
+
+    p {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .show-m {
+        display: inline !important;
+    }
+
+    .hide-m {
+        display: none !important;
+    }
+
+    .background {
+        height: 250px;
+    }
+
+    header .container {
+        max-width: var(--max-container-m);
+    }
+    
+        header img {
+            height: 30px;
+        }
+
+            header nav .btn {
+                padding: 8px 0;
+            }
+
+                header nav .search input {
+                    margin: 0 8px 0 0;
+                    padding: 7px 15px 6px 34px;
+                    width: 300px;
+                    font-size: 14px;
+                }
+
+                header nav .search .search-icon {
+                    top: calc(50% - 8px);
+                    left: 8px;
+                }
+
+    main .container {
+        padding: 40px 0 50px 0;
+        max-width: var(--max-container-m);
+    }
+
+}
+
+/* 425px - 767px */
+@media all and (max-width: 767px) {
+
+    p {
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .show-s {
+        display: inline !important;
+    }
+
+    .hide-s {
+        display: none !important;
+    }
+
+}
+
+/* 375px - 424px */
+@media all and (max-width: 424px) {
+
+    .show-xs {
+        display: inline !important;
+    }
+
+    .hide-xs {
+        display: none !important;
+    }
+
+}
+
+/* 320px - 374px */
+@media all and (max-width: 374px) {
+
+    .show-xxs {
+        display: inline !important;
+    }
+
+    .hide-xxs {
+        display: none !important;
+    }
+
+    .background {
+        height: 50px;
+    }
+
+}

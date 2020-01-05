@@ -1,0 +1,77 @@
+/* Search Page Styling */
+
+.search-results {
+    margin: 40px 0 0 0;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+    .search-result {
+        padding: 30px 35px 30px 30px;
+        width: calc(50% - 80px);
+        background-color: var(--main-bg-color);
+        box-shadow: var(--main-box-shadow);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .search-result:nth-child(n + 3) {
+        margin: 30px 0 0 0;
+    }
+
+        .search-result img {
+            width: 100px;
+            height: 154px;
+            object-fit: cover;
+            box-shadow: var(--main-box-shadow);
+        }
+
+    .search-result > .book-info {
+        width: calc(100% - 125px);
+    }
+
+        .search-result > .book-info > p {
+            margin: 0 0 10px 0;
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 30px;
+            color: var(--main-title-color)
+        }
+
+        .search-result > .book-info p.author {
+            margin: 0 0 12px 0;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 22px;
+            color: var(--main-text-color)
+        }
+
+        .search-result > .book-info > .star-rating {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .search-result > .book-info > .star-rating img {
+            padding: 0;
+            margin: 0 2px 0 0;
+            width: auto;
+            height: 16px;
+            box-shadow: none;
+        }
+
+        .search-result > .book-info >  .star-rating img.faded {
+            opacity: 0.3;
+        }
+
+        .search-result > .book-info > .star-rating p {
+            margin: 0 0 0 6px;
+            display: inline-block;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--grey-text-color);
+        }

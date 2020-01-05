@@ -11,19 +11,23 @@
     <base href="/">
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/css/book-details.css">
 </head>
 <body>
     <div class="background"></div>
     <header>
         <div class="container">
-            <img>
+            <a href="/">
+                <img src="media/assets/logo.svg" alt="BetterReads logo" draggable="false">
+            </a>
             <nav>
-                <div class="search">
-                    <img  class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
-                    <input type="text" placeholder="Search Books by Title, Author or ISBN"/>
-                    <a class="btn" href="#" id="nav-search">Search</a>
-                </div>
+                <!-- Search Form -->
+                <form class="search" action="/dbSearch" method="POST">
+                    <img class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
+                    <input type="text" placeholder="Search Books by Title or ISBN" name="searchQuery" autocomplete="off"/>
+                    <button class="btn" id="nav-search" type="submit">Search</button>
+                </form>
             </nav>
         </div>
     </header>
@@ -37,6 +41,7 @@
                     <div class="book-title">
                         <h1><%= book.title %></h1>
                         <p class="author">
+                            <!-- For each of the authors in the array, display the authors seperated by a comma -->
                             <% for (let i = 1; i <= book.authors.length; i++) { %>
                                 <%= book.authors[(i - 1)] %><% if(i !== (book.authors.length)) { %>,<% } %>
                             <% } %>
@@ -44,19 +49,31 @@
                     </div>
                     <div class="book-rating">
                         <div class="book-rating-stars">
-                            <% for (let j = 1; j <= Math.floor(book.averageRatingInteger); j++) { %>
+                            <!-- Display the amount of stars equivilent to the numberRating value, rounded down -->
+                            <% const averageRatingInteger = book.averageRating.toFixed(1) %>
+                            <% for (let j = 1; j <= Math.floor(averageRatingInteger); j++) { %>
                                 <img src="media/assets/rating-star.svg" alt="Star Icon">
                             <% } %>
-                            <% if ((Math.round(book.averageRatingInteger) - book.averageRatingInteger !== 0) && (Math.round(book.averageRatingInteger) - Math.round(book.averageRatingInteger).toFixed(0) !== 1)) { %>
+                            <!-- Calculate if a half-star should be shown, if so: display a half-star icon -->
+                            <% if ((Math.round(averageRatingInteger) - averageRatingInteger !== 0) && (Math.round(averageRatingInteger) - Math.round(averageRatingInteger).toFixed(0) !== 1)) { %>
                                 <img src="media/assets/half-rating-star.svg" alt="Half Star Icon">
+                                <!-- Fill in the missing stars with faded stars -->
+                                <% for (let j = 4; j > Math.floor(averageRatingInteger); j--) { %>
+                                    <img class="faded" src="media/assets/rating-star.svg" alt="Star Icon">
+                                <% } %>
+                            <% } else { %>
+                                <!-- Fill in the missing stars with faded stars -->
+                                <% for (let j = 5; j > Math.floor(averageRatingInteger); j--) { %>
+                                    <img class="faded" src="media/assets/rating-star.svg" alt="Star Icon">
+                                <% } %>
                             <% } %>
                         </div>
                         <p class="book-rating-info text-light">
-                            (<%= book.averageRating %> Avg Rating<span class="rating-count hide-xxl">&nbsp;&nbsp;|&nbsp;&nbsp;<%= book.reviews.length %> Ratings</span><span class="review-count hide-s">&nbsp;&nbsp;|&nbsp;&nbsp;<%= book.reviews.length %> Reviews</span>)
+                            (<%= book.averageRating.toFixed(2).toString().replace('.', ',') %> Avg Rating&nbsp;&nbsp;|&nbsp;&nbsp;<%= book.reviewCount %> Reviews)
                         </p>
                     </div>
                     <div class="book-share">
-                        <a class="btn btn-highlight" href="#">
+                        <a class="btn btn-light-blue" href="#">
                             <img src="media/assets/share-icon-blue.svg" alt="Share Icon">
                             Share Book
                         </a>
@@ -65,6 +82,7 @@
                         <div class="meta-item">
                             <img src="media/assets/tag-icon.svg" alt="Genre Icon">
                             <p>
+                                <!-- For each of the genres in the array, display the gernes seperated by a comma -->
                                 <% for (let i = 1; i <= book.genres.length; i++) { %>
                                     <%= book.genres[(i - 1)] %><% if(i !== (book.genres.length)) { %>,<% } %>
                                 <% } %>
@@ -78,7 +96,7 @@
                 </div>
                 <div class="book-description">
                     <p>
-                        <%- book.description %><a class="hide-xxl show-m text-light" href="#">... read more</a>
+                        <%- book.description %>
                     </p>
                     <div class="book-meta hide-m">
                         <div class="meta-item">
@@ -91,7 +109,7 @@
                         </div>
                         <div class="meta-item">
                             <img src="media/assets/isbn-icon.svg" alt="Hash Icon">
-                            <p>ISBN: <%= book.ISBN %></p>
+                            <p>ISBN: <%= book.isbn %></p>
                         </div>
                     </div>
                 </div>
@@ -99,14 +117,21 @@
             <div class="book-reviews">
                 <div class="header">
                     <h2>Ratings & Reviews</h2>
-                    <a class="btn btn-cta" href="#">
+                    <!-- <a class="btn btn-blue" href="#">
                         Review This Book
-                    </a>
+                    </a> -->
                 </div>
-                <form action="/uploadReview" method="POST">
+                <!-- Review Upload Form -->
+                <form action="/uploadReview" id="review-upload-form" method="POST">
                     <input name="bookId" type="hidden" value="<%= book.bookId %>">
-                    <input type="text" placeholder="Name" name="userName" required>
+                    <input name="bookObjectId" type="hidden" value="<%= book._id %>">
+                    <div class="form-input">
+                        <input type="text" name="userName" id="userName" autocomplete="off" required autocomplete="off">
+                        <label for="userName">Name *</label>
+                        <p></p>
+                    </div>
                     <input type="hidden" min="1" max="5" name="numberRating" id="number-rating" required>
+                    <!-- Number rating stars -->
                     <div class="number-rating">
                         <div class="star-icon" id="number-rating-5" onclick="updateRating(this.id)">
                             <img src="media/assets/rating-star.svg" alt="Star Icon">
@@ -119,45 +144,55 @@
                         </div><div class="star-icon" id="number-rating-1" onclick="updateRating(this.id)">
                             <img src="media/assets/rating-star.svg" alt="Star Icon">
                         </div>
+                        <p></p>
                     </div>
-                    <textarea name="description" cols="30" rows="10" placeholder="Review" required></textarea>
-                    <button type="submit">Submit</button>
+                    <div class="form-input textarea">
+                        <textarea name="description" id="description" required autocomplete="off"></textarea>
+                        <label for="description">Review *</label>
+                        <p></p>
+                    </div>
+                    <div class="privacy-policy">
+                        <label for="acceptPrivacyPolicy">For information on how we use data see our <a href="#">privacy policy</a></label>
+                    </div>
+                    <button onclick="validateForm()" type="button">Submit</button>
                 </form>
-                <% for (let i = 0; i < book.reviews.length; i++) { %>
+                <!-- For each of the reviews passed into the view engine, display a review div -->
+                <% for (let i = 0; i < reviews.length; i++) { %>
                     <div class="review">
                         <div class="header">
                             <div class="rating">
-                                <p><b><%= book.reviews[i].userName %></b> rated it</p>
+                                <p><b><%= reviews[i].userName %></b> rated it</p>
                                 <div class="rating-stars">
-                                    <% for (let j = 1; j <= book.reviews[i].numberRating; j++) { %>
+                                    <!-- Display the amount of stars equivilent to the numberRating value -->
+                                    <% for (let j = 1; j <= reviews[i].numberRating; j++) { %>
                                         <img src="media/assets/rating-star.svg" alt="Star Icon">
                                     <% } %>
-                                    <% for (let j = 5; j > book.reviews[i].numberRating; j--) { %>
+                                    <!-- Fill in the missing stars with faded stars -->
+                                    <% for (let j = 5; j > reviews[i].numberRating; j--) { %>
                                         <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
                                     <% } %>
                                 </div>
                             </div>
                             <p class="date text-light">
-                                <span class="hide-s">8 October 2019</span>
-                                <span class="hide-xxl show-s">8/10/19</span>
+                                <span class="hide-s"><%= reviews[i].dateLongFormat %></span>
+                                <span class="hide-xxl show-s"><%= reviews[i].dateShortFormat %></span>
                             </p>
                         </div>
                         <div class="description">
-                            <p><%= book.reviews[i].description %></p>
+                            <p><%= reviews[i].description %></p>
                         </div>
                     </div>
                 <% } %>
-                <a class="btn" href="#">
-                    <img src="media/assets/plus-icon.svg" alt="Plus Icon">
-                    Load More Reviews
-                </a>
             </div>
         </div>
     </main>
-    <!-- <footer>
-        <p>&copy; 2019 BetterReads&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">Impressum</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">Datenschutz</a></p>
-    </footer> -->
+    <footer>
+        <p>&copy; 2020 BetterReads&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/terms">Terms</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/privacy">Privacy Policy</a></p>
+    </footer>
+
+    <script type="text/javascript" src="/js/validateConditions.js"></script>
     <script type="text/javascript">
+        // Set numberRating Value
         const updateRating = (ratingId) => {
             // Inject star rating value into the hidden number input with the id 'number-rating'
             document.querySelector('#number-rating').value = parseInt(ratingId.split('-')[2]);
@@ -167,6 +202,45 @@
             })
             // Add the class 'selected' to the star that was clicked by the user (highlights n amount of stars, where n is the rating clicked by the user)
             document.getElementById(ratingId).classList.add('selected');
+        }
+
+        // Form Validation Conditions
+        const conditions = [
+            {
+                query: '#userName',
+                min: 2,
+                max: 16
+            },
+            {
+                query: '#description',
+                min: 2,
+                max: 256
+            }
+        ];
+
+        // Validation Function
+        const validateForm = () => {
+            const bookForm = document.querySelector('#review-upload-form');
+            // Perform the validateConditions function for the defined conditions above
+            let error = validateConditions(conditions);
+
+            // Reset the error state in case the validation has been performed before
+            document.querySelector('.number-rating').classList.remove('error');
+            document.querySelector('.number-rating > p').classList.remove('errorMsg');
+            document.querySelector('.number-rating > p').innerHTML = '';
+
+            // validate if the number-rating was set
+            if (document.querySelector('#number-rating').value == '') {
+                document.querySelector('.number-rating').classList.add('error');
+                document.querySelector('.number-rating > p').classList.add('errorMsg');
+                document.querySelector('.number-rating > p').innerHTML = 'Please select a rating';
+                error = true;
+            }
+
+            // If the error is false, submit the form
+            if (!error) {
+                bookForm.submit();
+            }
         }
     </script>
 </body>

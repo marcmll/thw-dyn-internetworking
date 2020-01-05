@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>edit</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboard-/-Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Dashboard-[Desktop-HD]" transform="translate(-1256.000000, -568.000000)" stroke="#0576FF" stroke-width="1.52380952">
+            <g id="Search-Result" transform="translate(310.000000, 528.000000)">
+                <g id="Edit-Button" transform="translate(900.000000, 30.000000)">
+                    <g id="edit" transform="translate(47.000000, 11.000000)">
+                        <path d="M6.85714286,2.28571429 L1.52380952,2.28571429 C0.682232762,2.28571429 0,2.96794705 0,3.80952381 L0,14.4761905 C0,15.3177672 0.682232762,16 1.52380952,16 L12.1904762,16 C13.032053,16 13.7142857,15.3177672 13.7142857,14.4761905 L13.7142857,9.14285714" id="Path"></path>
+                        <path d="M12.5714286,1.14285714 C13.2026111,0.511674594 14.2259603,0.511674605 14.8571428,1.14285717 C15.4883254,1.77403973 15.4883254,2.79738885 14.8571429,3.42857143 L7.61904762,10.6666667 L4.57142857,11.4285714 L5.33333333,8.38095238 L12.5714286,1.14285714 Z" id="Path"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -7,37 +7,82 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Title -->
-    <title>BetterReads &raquo; <%= book.title %></title>
+    <title>BetterReads &raquo; Search Results</title>
     <base href="/">
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/css/search.css">
 </head>
 <body>
     <div class="background"></div>
     <header>
         <div class="container">
-            <img>
+            <a href="/">
+                <img src="media/assets/logo.svg" alt="BetterReads logo" draggable="false">
+            </a>
             <nav>
-                <div class="search">
-                    <img  class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
-                    <input type="text" placeholder="Search Books by Title, Author or ISBN"/>
-                    <a class="btn" href="#" id="nav-search">Search</a>
-                </div>
+                <!-- Search Form -->
+                <form class="search" action="/dbSearch" method="POST">
+                    <img class="search-icon" src="media/assets/search-icon.svg" alt="Search Icon">
+                    <input type="text" placeholder="Search Books by Title or ISBN" name="searchQuery" autocomplete="off"/>
+                    <button class="btn" id="nav-search" type="submit">Search</button>
+                </form>
             </nav>
         </div>
     </header>
     <main>
         <div class="container">
-            <h2>Search Results for "Factfulness"</h2>
+            <h1>Search Results for "<%= query %>"</h1>
             <div class="search-results">
-                <div class="search-result">
-                    <div class="search-image">
-                        <img src="./media/assets/book-cover.jpg" alt="book cover">
-                    </div>
-                </div>
+                <!-- For each of the books returned in the search results, show a div (a)
+                with the book's cover, title, authors, rating; linking to the book detail page -->
+                <% for (let i = 0; i < searchResults.length; i++) { %>
+                    <a class="search-result" href="/book/<%= searchResults[i].bookId %>">
+                        <img src="<%= searchResults[i].bookMediaLink %>" alt="book cover">
+                        <div class="book-info">
+                            <p><%= searchResults[i].title %></p>
+                            <p class="author">
+                                <!-- For each of the authors in the array, display the authors seperated by the comma -->
+                                <% for (let j = 1; j <= searchResults[i].authors.length; j++) { %>
+                                    <%= searchResults[i].authors[(j - 1)] %><% if(j !== (searchResults[i].authors.length)) { %>,<% } %>
+                                <% } %>
+                            </p>
+                            <div class="star-rating">
+                                <!-- Display the amount of stars equivilent to the numberRating value, rounded down -->
+                                <% const averageRatingInteger = searchResults[i].averageRating.toFixed(1) %>
+                                <% for (let j = 1; j <= Math.floor(averageRatingInteger); j++) { %>
+                                    <img src="media/assets/rating-star.svg" alt="Star Icon">
+                                <% } %>
+                                <!-- Calculate if a half-star should be shown, if so: display a half-star icon -->
+                                <% if ((Math.round(averageRatingInteger) - averageRatingInteger !== 0) && (Math.round(averageRatingInteger) - Math.round(averageRatingInteger).toFixed(0) !== 1)) { %>
+                                    <img src="media/assets/half-rating-star.svg" alt="Half Star Icon">
+                                    <!-- Fill in the missing stars with faded stars -->
+                                    <% for (let j = 4; j > Math.floor(averageRatingInteger); j--) { %>
+                                        <img class="faded" src="media/assets/rating-star.svg" alt="Star Icon">
+                                    <% } %>
+                                <% } else { %>
+                                    <!-- Fill in the missing stars with faded stars -->
+                                    <% for (let j = 5; j > Math.floor(averageRatingInteger); j--) { %>
+                                        <img class="faded" src="media/assets/rating-star.svg" alt="Star Icon">
+                                    <% } %>
+                                <% } %>
+                                <!-- Show the average rating, rounded to two decimal places -->
+                                <p>(<%= searchResults[i].averageRating.toFixed(2).toString().replace('.', ',') %> Avg Rating)</p>
+                            </div>
+                        </div>
+                    </a>
+                <% } %>
+
+                <!-- If no books are found, display an error message informing the user -->
+                <% if (searchResults.length <= 0) { %>
+                    <p>This search returned no results, try again.</p>
+                <% } %>
             </div>
         </div>
     </main>
+    <footer>
+        <p>&copy; 2020 BetterReads&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/terms">Terms</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/privacy">Privacy Policy</a></p>
+    </footer>
 </body>
 </html>

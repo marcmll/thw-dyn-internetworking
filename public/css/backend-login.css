@@ -1,0 +1,41 @@
+/* Backend Login Page Styling */
+
+.login-form {
+    margin: 30px 0 0 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+    .login-form > input {
+        padding: 10px 15px;
+        width: 300px;
+        border: 0px;
+        background-color: var(--main-bg-color);
+        border: 1px solid white;
+        font-size: 16px;
+        line-height: 16px;
+    }
+
+        .login-form > input.error {
+            border: 1px solid var(--light-red-button-color)
+        }
+
+    .login-form button {
+        padding: 11px 0;
+        margin: 0 0 0 15px;
+        width: 100px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 16px;
+        background-color: #DEE2E6;
+        color: #495057;
+        font-family: 'Inter var', sans-serif;
+        border: 0px;
+        cursor: pointer;
+    }
+
+p.login-error {
+    padding: 5px 0 0 5px;
+    font-size: 14px;
+}
