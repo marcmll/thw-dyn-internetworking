@@ -15,6 +15,7 @@
         box-shadow: var(--main-box-shadow);
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .search-result:nth-child(n + 3) {
