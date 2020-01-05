@@ -11,6 +11,7 @@
         background-color: var(--main-bg-color);
         box-shadow: var(--main-box-shadow);
         display: grid;
+        justify-content: flex-start;
         grid-column-gap: 30px;
         grid-row-gap: 20px;
         grid-template-areas:

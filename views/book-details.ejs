@@ -73,7 +73,7 @@
                         </p>
                     </div>
                     <div class="book-share">
-                        <a class="btn btn-light-blue" target="_blank" href="mailto:?subject=BetterReads:%20<%= book.title.split(' ').join('%20') %>&body=Check%20out%20%22<%= book.title.split(' ').join('%20') %>%22%20on%20BetterReads!%20http://betterreads.com/book/<%= book.bookId %>%0A%0A<%- book.description.split(' ').join('%20') %>">
+                        <a class="btn btn-light-blue" target="_blank" href="mailto:?subject=BetterReads:%20<%= book.title.split(' ').join('%20') %>&body=Check%20out%20%22<%= book.title.split(' ').join('%20') %>%22%20on%20BetterReads!%20http://betterreads.com/book/<%= book.bookId %>%0A%0A<%= book.description.split(' ').join('%20') %>">
                             <img src="media/assets/share-icon-blue.svg" alt="Share Icon">
                             Share Book
                         </a>
