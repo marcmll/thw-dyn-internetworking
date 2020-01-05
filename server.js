@@ -4,6 +4,7 @@ const session = require('express-session'); // Sessions
 const bodyParser = require('body-parser'); // Body Parser
 const ObjTree = require('xml-objtree'); // XML to JSON Converter
 const xhr = require('xhr-request'); // XHR Request package
+const cookieParser = require('cookie-parser');  // Cookie Parser package
 const mongoose = require('mongoose'); // MongoDB (Mongoose) package
 
 /* ///////////////////
@@ -26,13 +27,16 @@ app.use(express.static('public'));
 // Initialize Sessions
 app.use(session({secret: 'sessionsecret', saveUninitialized: true, resave: true}));
 
+// Initialize Cookies
+app.use(cookieParser());
+
 // Initialize body parser
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
 
-// Set view engine: EJS
+// Set view engine: EJS (EJS is a simple templating language that lets you generate HTML markup with plain JavaScript)
 app.set('view engine', 'ejs');
 
 // GET Index Page (Home)
@@ -50,6 +54,7 @@ app.get('/', (req, res) => {
     });
 });
 
+
 // GET Book Detail Page
 app.get('/book/:uid', (req, res) => {
     // DB Request: find the book with the bookId matching the uid parameter in the URL
@@ -57,17 +62,106 @@ app.get('/book/:uid', (req, res) => {
         if (data.length > 0) {
             // If a book with the uid is found, save the data returned from the DB in the variable bookData
             const bookData = data[0]
+
+            // Find out if the user has already written a review for this book
+            let userReviews = (req.cookies.userReviews || '').split(',');
+            let reviewQuery = { bookId: bookData._id };
+            if (userReviews.includes(bookData._id.toString())) {
+                // If the user has reviewed the book, adjust the reviewQuery to exlude the review belonging to the user
+                reviewQuery = { bookId: bookData._id, _id: { $ne: userReviews[(userReviews.indexOf(bookData._id.toString()) + 1)] } };
+            }
+
             // DB Request: find all reviews with the bookId matching the _id for the book found and sort them from most recent to longest ago.
-            Review.find({ bookId: bookData._id }).sort([['dateSubmitted', -1]]).then((reviewData) => {
-                // When all reviews have been found, render the book-details.ejs view with the bookData and reviewData recieved from the DB.
-                res.render('book-details.ejs', { book: bookData, reviews: reviewData })
+            Review.find(reviewQuery).sort([['dateSubmitted', -1]]).then((reviewData) => {
+                // When all reviews have been found, check if the user has written a review, based on the query inserted above
+                if (reviewQuery._id !== undefined) {
+                    // If the user has written a review: DB Request: find the review with the corresponding _id
+                    Review.find({ _id: reviewQuery._id.$ne }).then((userReviewData) => {
+                        // When the user review has been found, render the book-details.ejs view with the bookData, userReviewData and reviewData recieved from the DB.
+                        res.render('book-details.ejs', { book: bookData, userReview: userReviewData[0], reviews: reviewData })
+                    })
+                } else {
+                    // If the user has yet to write a review for this book, render the book-details.ejs view with the bookData and reviewData recieved from the DB.
+                    res.render('book-details.ejs', { book: bookData, reviews: reviewData })
+                }
             })
         } else {
             // If no book with the uid is found, render the 404.ejs view with a custom 404 message.
-            res.render('404.ejs', { errorMsg: 'This URL does not return a book in our database. Check the URL, search or visit the <a href="/">homepage</a>.' })
+            res.render('404.ejs', { errorTitle: 'Book not Found', errorMsg: 'This URL does not return a book in our database. Check the URL, search or visit the <a href="/">homepage</a>.' })
         }
     });
 });
+
+
+// POST: Review Upload Request
+app.post('/uploadReview', (req, res) => {
+    const currentDate = new Date;
+
+    // Make new JS Object following the review scheme getting the data from the inputs in the submitted form.
+    const newReview = {
+        bookId: req.body.bookObjectId,
+        userName: req.body.userName,
+        numberRating: parseInt(req.body.numberRating),
+        description: req.body.description,
+        dateLongFormat: `${currentDate.getDate()} ${matchFullMonth((currentDate.getMonth() + 1))} ${currentDate.getFullYear()}`,
+        dateShortFormat: `${currentDate.getDate()}/${(currentDate.getMonth() + 1)}/${String(currentDate.getFullYear()).substr(2,2)}`
+    };
+
+    // DB Request: save a new review with the data in the newReview object defined above
+    (new Review(newReview)).save(newReview).then((reviewData) => {
+        //  When review is successfully saved, update the Cookie so that the user cannot write a second review for the same book
+        let userReviews = req.cookies.userReviews || '';
+        if (userReviews == undefined || userReviews == '' || userReviews.length == 0) { // In case Cookie 'userReviews' doesn't exist yet, initialize it with the Review _id
+            userReviews = `${reviewData.bookId},${reviewData._id}`;
+        } else {
+            userReviews += `,${reviewData.bookId},${reviewData._id}`;
+        }
+        res.cookie('userReviews', userReviews); // overwrite Cookie 'userReviews'
+
+        // Once Cookie is updated, redirect to the updateBookReviewCount route, passing along the bookId and bookObjectId from the hidden input fields
+        res.redirect(`/updateBookReviewCount/${req.body.bookId}/${req.body.bookObjectId}`);
+    });
+});
+
+
+// GET: Update Book Review Count / Average Rating
+app.get('/updateBookReviewCount/:bookId/:bookObjectId', (req, res) => {
+    // DB Request: find all reviews with the bookId equal to the bookObjectId in the parameters of the request URL
+    Review.find({ bookId: req.params.bookObjectId }).then((reviewData) => {
+        let ratingSum = 0
+        // For each of the reviews found, add the number rating to the sum of all reviews
+        reviewData.forEach((item, idnex) => {
+            ratingSum += item.numberRating
+        });
+
+        // DB Request: update the book with the _id equal to the bookObjectId: set the reviewCount to the amount of reviews found and set the average rating to the sum of all review ratings and the amount of reviews found (average)
+        Book.findOneAndUpdate({ _id: req.params.bookObjectId.toLowerCase() }, { reviewCount: reviewData.length, averageRating: (ratingSum / reviewData.length) }).then(() => {
+            // When the book is successfully updated, redirect to the book detail page
+            res.redirect(`/book/${req.params.bookId}`);
+        });
+    });
+});
+
+
+// POST Search
+app.post('/dbSearch', (req, res) => {
+    const searchQuery = req.body.searchQuery.toString();
+    // DB Request: find the book with the isbn set to the search field input
+    Book.find({ isbn: searchQuery }).then((isbnData, err) => {
+        if (err) return res.send(err)
+        if (isbnData.length > 0) {
+            // If a book with this isbn in found, redirect to the books detail page
+            res.redirect(`/book/${isbnData[0].bookId}`);
+        } else {
+            // If no book with this isbn is found: DB Request: find all books that have a title including the search query (not case sensitive)
+            Book.find({ title: { $regex: searchQuery, $options: 'i' } }).then((textMatchData, error) => {
+                // Render the search.ejs view, passing along the search query and the book data for all of the books found.
+                res.render('search.ejs', { query: searchQuery, searchResults: textMatchData });
+            });
+        }
+    });
+});
+
 
 // GET Backend Redirect (Logged in: Dashboard // else: Login)
 app.get('/backend', (req, res) => {
@@ -79,7 +173,8 @@ app.get('/backend', (req, res) => {
         // If loggedIn is set to false, or no session is found, redirect to the login page
         res.redirect('/backend/login')
     }
-})
+});
+
 
 // GET Backend Login Page
 app.get('/backend/login', (req, res) => {
@@ -92,7 +187,8 @@ app.get('/backend/login', (req, res) => {
         // If loggedIn is set to false, or no session is found, render the backend-login.ejs view and send the error query if found.
         res.render('backend-login.ejs', { error: error });
     }
-})
+});
+
 
 // POST Login Request
 app.post('/login', (req, res) => {
@@ -108,17 +204,21 @@ app.post('/login', (req, res) => {
             // If no DB User is found, redirect to the login page with error set to true
             res.redirect('/backend/login?error=true')
         }
-    })
-})
+    });
+});
 
+
+// POST Logout Request
 app.get('/backend/logout', (req, res) => {
     // Destroy the session, automatically settings loggedIn to false, then redirect to the login page
     req.session.destroy((err) => {
         if(err) return console.log(err);
         res.redirect('/backend/login');
     });
-})
+});
 
+
+// GET Backend Dashboard
 app.get('/backend/dashboard', (req, res) => {
     const currentSession = req.session
     const filterOptions = [
@@ -177,15 +277,17 @@ app.get('/backend/dashboard', (req, res) => {
         // If loggedIn is false or there is no session, redirect to the login page
         res.redirect('/backend/login')
     }
-})
+});
 
-// POST Backend New Book Form
+
+// GET Backend New Book Form
 app.get('/backend/editBook', (req, res) => {
     // Render the new-book-form.ejs view with an empty object named "book"
     res.render('new-book-form.ejs', { book: {} });
-})
+});
 
-// POST Backend New Book Form
+
+// POST Backend Book Form
 app.post('/backend/editBook', (req, res) => {
     // DB Request: find the book with the bookID set to the bookId in the hidden input field, limit this to 1.
     Book.find({ bookId: req.body.bookId.toLowerCase() }).limit(1).then((data) => {
@@ -199,53 +301,6 @@ app.post('/backend/editBook', (req, res) => {
     });
 });
 
-// POST Request: remove Book
-app.post('/backend/deleteBook', (req, res) => {
-    // DB Request: delete all reviews with the bookId set to the bookId from the hidden input field.
-    Review.deleteMany({ bookId: req.body.bookId }).then(() => {
-        // DB Request: delete the book with the _id set to the bookId from the hidden input field.
-        Book.findOneAndDelete({ _id: req.body.bookId }).then(() => {
-            // When all reviews and the book are deleted, redirect to the dashboard
-            res.redirect('./dashboard');
-        });
-    });
-})
-
-// POST Request: remove Book
-app.post('/backend/toggleEditorPick', (req, res) => {
-    const newState = req.body.editorPick == 'true' ? false : true;
-    // DB Request: update the editorPick boolean for the book with the _id equivilent to the bookId from the hidden input field.
-    Book.findOneAndUpdate({ _id: req.body.bookId.toLowerCase() }, { editorPick: newState }).then(() => {
-        // When the editorPick boolean has been updated for the selected book, redirect to the dashboard
-        res.redirect('./dashboard');
-    });
-})
-
-// POST Search
-app.post('/dbSearch', (req, res) => {
-    const searchQuery = req.body.searchQuery.toString();
-    // DB Request: find the book with the isbn set to the search field input
-    Book.find({ isbn: searchQuery }).then((isbnData, err) => {
-        if (err) return res.send(err)
-        if (isbnData.length > 0) {
-            // If a book with this isbn in found, redirect to the books detail page
-            res.redirect(`/book/${isbnData[0].bookId}`);
-        } else {
-            // If no book with this isbn is found: DB Request: find all books that have a title including the search query (not case sensitive)
-            Book.find({ title: { $regex: searchQuery, $options: 'i' } }).then((textMatchData, error) => {
-                // Render the search.ejs view, passing along the search query and the book data for all of the books found.
-                res.render('search.ejs', { query: searchQuery, searchResults: textMatchData });
-            });
-        }
-    });
-});
-
-// POST Backend Search
-app.post('/backend/search', (req, res) => {
-    const searchQuery = req.body.searchQuery.toString();
-    // redirect to the dashboard with the search query as a URL query
-    res.redirect(`/backend/dashboard?search=${searchQuery}`);
-});
 
 // POST Book Upload Request
 app.post('/uploadBook', (req, res) => {
@@ -305,11 +360,45 @@ app.post('/uploadBook', (req, res) => {
 
                 // Render the new-book-form.ejs view, passing in the data entered and the error message
                 res.render('new-book-form.ejs', { book: newBook, errorData: errorData });
-            })
+            });
         }
-    })
+    });
 });
 
+
+// POST Request: Remove Book
+app.post('/backend/deleteBook', (req, res) => {
+    // DB Request: delete all reviews with the bookId set to the bookId from the hidden input field.
+    Review.deleteMany({ bookId: req.body.bookId }).then(() => {
+        // DB Request: delete the book with the _id set to the bookId from the hidden input field.
+        Book.findOneAndDelete({ _id: req.body.bookId }).then(() => {
+            // When all reviews and the book are deleted, redirect to the dashboard
+            res.redirect('./dashboard');
+        });
+    });
+});
+
+
+// POST Request: Toggle Editor Pick State
+app.post('/backend/toggleEditorPick', (req, res) => {
+    const newState = req.body.editorPick == 'true' ? false : true;
+    // DB Request: update the editorPick boolean for the book with the _id equivilent to the bookId from the hidden input field.
+    Book.findOneAndUpdate({ _id: req.body.bookId.toLowerCase() }, { editorPick: newState }).then(() => {
+        // When the editorPick boolean has been updated for the selected book, redirect to the dashboard
+        res.redirect('./dashboard');
+    });
+});
+
+
+// POST Request: Backend Search
+app.post('/backend/search', (req, res) => {
+    const searchQuery = req.body.searchQuery.toString();
+    // redirect to the dashboard with the search query as a URL query
+    res.redirect(`/backend/dashboard?search=${searchQuery}`);
+});
+
+
+// GET Request: API Search Form
 app.get('/backend/apiSearch', (req, res) => {
     const currentSession = req.session
     // If session is found with loggedIn as true, render the backend-api-results.ejs view with an empty object named "books"
@@ -319,8 +408,10 @@ app.get('/backend/apiSearch', (req, res) => {
         // If loggedIn is set to false, or no session is found, redirect to the login page
         res.redirect('/backend/login')
     }
-})
+});
 
+
+// POST Request: API Search Request
 app.post('/backend/apiSearch', (req, res) => {
     const searchQuery = req.body.searchQuery.split(' ').join('+');
     // XHR Request: /search goodreads API endpoint with the search query and the api key
@@ -344,8 +435,9 @@ app.post('/backend/apiSearch', (req, res) => {
         }
         // Once iterating through all the results, render the backend-api-results.ejs view, passing in the book data for all books found and the search query
         res.render('backend-api-results.ejs', { books: bookData, search: req.body.searchQuery })
-    })
-})
+    });
+});
+
 
 // Function for matching the suffix of the day number: 1 -> 1st, 22 -> 22nd, 28 -> 28th, etc.
 const matchDaySuffix = (day) => {
@@ -372,6 +464,7 @@ const matchDaySuffix = (day) => {
     }
 }
 
+
 // Function for matching the months number to its string form: 1 -> January, 12 -> December, etc.
 const matchFullMonth = (month) => {
     const monthList = [
@@ -391,6 +484,7 @@ const matchFullMonth = (month) => {
     return monthList[(month - 1)]
 }
 
+
 // Function matching language code from the goodreads api to a full string: ger -> German, eng -> English.
 const matchLanguageCode = (langCode) => {
     switch (langCode) {
@@ -401,11 +495,13 @@ const matchLanguageCode = (langCode) => {
     }
 }
 
+
 // Function for capitalizing the first letter of a string: history -> History
 const capitalize = (s) => {
     if (typeof s !== 'string') return ''
     return s.charAt(0).toUpperCase() + s.slice(1)
 }
+
 
 // Function for matching the genres from the goodreads api to string genres: science-fiction -> Science Fiction
 const getGenres = (apiGenres) => {
@@ -426,6 +522,8 @@ const getGenres = (apiGenres) => {
     return genres
 }
 
+
+// POST Request: API Form Fill: Request Book Details from goodreads API and fill them into book form
 app.post('/backend/apiFormFill', (req, res) => {
     const goodreadsBookId = req.body.bookId;
     // XHR Request: /book/show/ API endpoint with the bookid from the API /search results and the API key
@@ -474,82 +572,17 @@ app.post('/backend/apiFormFill', (req, res) => {
         }
         
         // When all data is recieved and formated, render the new-book-form.ejs view, passing in the formated book data
-        res.render('new-book-form.ejs', { book: bookData })
-    })
-})
-
-// POST Review Upload Request
-app.post('/uploadReview', (req, res) => {
-    const currentDate = new Date;
-
-    // Make new JS Object following the review scheme getting the data from the inputs in the submitted form.
-    const newReview = {
-        bookId: req.body.bookObjectId,
-        userName: req.body.userName,
-        numberRating: parseInt(req.body.numberRating),
-        description: req.body.description,
-        dateLongFormat: `${currentDate.getDate()} ${matchFullMonth((currentDate.getMonth() + 1))} ${currentDate.getFullYear()}`,
-        dateShortFormat: `${currentDate.getDate()}/${(currentDate.getMonth() + 1)}/${String(currentDate.getFullYear()).substr(2,2)}`
-    };
-
-    // DB Request: save a new review with the data in the newReview object defined above
-    (new Review(newReview)).save(newReview).then(() => {
-        // When review is successfully saved, redirect to the updateBookReviewCount route, passing along the bookId and bookObjectId from the hidden input fields
-        res.redirect(`/updateBookReviewCount/${req.body.bookId}/${req.body.bookObjectId}`);
-    })
-});
-
-// GET Update Book Review Count
-app.get('/updateBookReviewCount/:bookId/:bookObjectId', (req, res) => {
-    // DB Request: find all reviews with the bookId equal to the bookObjectId in the parameters of the request URL
-    Review.find({ bookId: req.params.bookObjectId }).then((reviewData) => {
-        let ratingSum = 0
-        // For each of the reviews found, add the number rating to the sum of all reviews
-        reviewData.forEach((item, idnex) => {
-            ratingSum += item.numberRating
-        });
-
-        // DB Request: update the book with the _id equal to the bookObjectId: set the reviewCount to the amount of reviews found and set the average rating to the sum of all review ratings and the amount of reviews found (average)
-        Book.findOneAndUpdate({ _id: req.params.bookObjectId.toLowerCase() }, { reviewCount: reviewData.length, averageRating: (ratingSum / reviewData.length) }).then(() => {
-            // When the book is successfully updated, redirect to the book detail page
-            res.redirect(`/book/${req.params.bookId}`);
-        });
+        res.render('new-book-form.ejs', { book: bookData });
     });
 });
 
-// REMOVE THIS!
-app.get('/backend/newBook/init', (req, res) => {
-    Review.remove(() => {
-        Book.remove((err) => {
-            if (err) return console.log(err);
-            const initialBook = new Book({
-                bookId: 'factfulness',
-                isbn: '1473637465',
-                title: `Factfulness: Ten Reasons We're Wrong About the World – and Why Things Are Better Than You Think`,
-                genres: 'Nonfiction, Science',
-                authors: 'Hans Rosling, Ola Rosling, Anna Rosling Rönnlund',
-                description: `<i>Factfulness</i>: The stress-reducing habit of only carrying opinions for which you have strong supporting facts.<br><br>When asked simple questions about global trends—<i>what percentage of the world’s population live in poverty; why the world’s population is increasing; how many girls finish school</i>—we systematically get the answers wrong. In Factfulness, Professor of International Health and global TED phenomenon Hans Rosling, together with his two long-time collaborators, Anna and Ola, offers <b>a radical new explanation of why this happens</b>. They reveal <b>the ten instincts that distort our perspective</b>—from our tendency to divide the world into two camps (usually some version of us and them) to the way we consume media (where fear rules) to how we perceive progress (believing that most things are getting worse).<br><br>Our problem is that we don’t know what we don’t know, and even our guesses are informed by unconscious and predictable biases.<br><br><b>It turns out that the world, for all its imperfections, is in a much better state than we might think</b>. That doesn’t mean there aren’t real concerns. But when we worry about everything all the time instead of embracing a worldview based on facts, we can lose our ability to focus on the things that threaten us most.`,
-                pageCount: 342,
-                language: 'English',
-                datePublished: 'January 25th 2018',
-                bookMediaLink: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1544963815l/34890015._SY475_.jpg',
-                editorPick: true,
-                reviewCount: 0,
-                averageRating: 0
-            });
-            initialBook.save((error) => {
-                if (error) return console.log(error);
-                res.redirect(`/book/factfulness`);
-            });
-        })
-    })
-})
 
-// GET: 404 (All Routes not found before this point)
+// GET Request: 404 (All Routes not found before this point)
 app.get('*', (req, res) => {
     // Render the 404.ejs view, passing in a custom error message
-    res.render('404.ejs', { errorMsg: 'This URL does not seem to exist. Check the URL, search or visit the <a href="/">homepage</a>.' })
-})
+    res.render('404.ejs', { errorTitle: 'URL not Found', errorMsg: 'This URL does not seem to exist. Check the URL, search or visit the <a href="/">homepage</a>.' })
+});
+
 
 // MongoDB Connection
 mongoose.connect('mongodb://betterreads_admin:betterreads-pwd-2019@localhost:27017/betterreads', {

@@ -73,7 +73,7 @@
                         </p>
                     </div>
                     <div class="book-share">
-                        <a class="btn btn-light-blue" href="#">
+                        <a class="btn btn-light-blue" target="_blank" href="mailto:?subject=BetterReads:%20<%= book.title.split(' ').join('%20') %>&body=Check%20out%20%22<%= book.title.split(' ').join('%20') %>%22%20on%20BetterReads!%20http://betterreads.com/book/<%= book.bookId %>%0A%0A<%- book.description.split(' ').join('%20') %>">
                             <img src="media/assets/share-icon-blue.svg" alt="Share Icon">
                             Share Book
                         </a>
@@ -121,41 +121,68 @@
                         Review This Book
                     </a> -->
                 </div>
-                <!-- Review Upload Form -->
-                <form action="/uploadReview" id="review-upload-form" method="POST">
-                    <input name="bookId" type="hidden" value="<%= book.bookId %>">
-                    <input name="bookObjectId" type="hidden" value="<%= book._id %>">
-                    <div class="form-input">
-                        <input type="text" name="userName" id="userName" autocomplete="off" required autocomplete="off">
-                        <label for="userName">Name *</label>
-                        <p></p>
-                    </div>
-                    <input type="hidden" min="1" max="5" name="numberRating" id="number-rating" required>
-                    <!-- Number rating stars -->
-                    <div class="number-rating">
-                        <div class="star-icon" id="number-rating-5" onclick="updateRating(this.id)">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                        </div><div class="star-icon" id="number-rating-4" onclick="updateRating(this.id)">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                        </div><div class="star-icon" id="number-rating-3" onclick="updateRating(this.id)">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                        </div><div class="star-icon" id="number-rating-2" onclick="updateRating(this.id)">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
-                        </div><div class="star-icon" id="number-rating-1" onclick="updateRating(this.id)">
-                            <img src="media/assets/rating-star.svg" alt="Star Icon">
+                <% if (typeof userReview != 'undefined') { %>
+                    <div class="review highlight">
+                        <div class="header">
+                            <div class="rating">
+                                <p><b>You</b> rated it</p>
+                                <div class="rating-stars">
+                                    <!-- Display the amount of stars equivilent to the numberRating value -->
+                                    <% for (let j = 1; j <= userReview.numberRating; j++) { %>
+                                        <img src="media/assets/rating-star.svg" alt="Star Icon">
+                                    <% } %>
+                                    <!-- Fill in the missing stars with faded stars -->
+                                    <% for (let j = 5; j > userReview.numberRating; j--) { %>
+                                        <img class="faded" src="media/assets/rating-star.svg" alt="Faded Star Icon">
+                                    <% } %>
+                                </div>
+                            </div>
+                            <p class="date text-light">
+                                <span class="hide-s"><%= userReview.dateLongFormat %></span>
+                                <span class="hide-xxl show-s"><%= userReview.dateShortFormat %></span>
+                            </p>
                         </div>
-                        <p></p>
+                        <div class="description">
+                            <p><%= userReview.description %></p>
+                        </div>
                     </div>
-                    <div class="form-input textarea">
-                        <textarea name="description" id="description" required autocomplete="off"></textarea>
-                        <label for="description">Review *</label>
-                        <p></p>
-                    </div>
-                    <div class="privacy-policy">
-                        <label for="acceptPrivacyPolicy">For information on how we use data see our <a href="#">privacy policy</a></label>
-                    </div>
-                    <button onclick="validateForm()" type="button">Submit</button>
-                </form>
+                <% } else { %>
+                    <!-- Review Upload Form -->
+                    <form action="/uploadReview" id="review-upload-form" method="POST">
+                        <input name="bookId" type="hidden" value="<%= book.bookId %>">
+                        <input name="bookObjectId" type="hidden" value="<%= book._id %>">
+                        <div class="form-input">
+                            <input type="text" name="userName" id="userName" autocomplete="off" required autocomplete="off">
+                            <label for="userName">Name *</label>
+                            <p></p>
+                        </div>
+                        <input type="hidden" min="1" max="5" name="numberRating" id="number-rating" required>
+                        <!-- Number rating stars -->
+                        <div class="number-rating">
+                            <div class="star-icon" id="number-rating-5" onclick="updateRating(this.id)">
+                                <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            </div><div class="star-icon" id="number-rating-4" onclick="updateRating(this.id)">
+                                <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            </div><div class="star-icon" id="number-rating-3" onclick="updateRating(this.id)">
+                                <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            </div><div class="star-icon" id="number-rating-2" onclick="updateRating(this.id)">
+                                <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            </div><div class="star-icon" id="number-rating-1" onclick="updateRating(this.id)">
+                                <img src="media/assets/rating-star.svg" alt="Star Icon">
+                            </div>
+                            <p></p>
+                        </div>
+                        <div class="form-input textarea">
+                            <textarea name="description" id="description" required autocomplete="off"></textarea>
+                            <label for="description">Review *</label>
+                            <p></p>
+                        </div>
+                        <div class="privacy-policy">
+                            <label for="acceptPrivacyPolicy">For information on how we use data see our <a href="#">privacy policy</a></label>
+                        </div>
+                        <button onclick="validateForm()" type="button">Submit</button>
+                    </form>
+                <% } %>
                 <!-- For each of the reviews passed into the view engine, display a review div -->
                 <% for (let i = 0; i < reviews.length; i++) { %>
                     <div class="review">

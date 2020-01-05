@@ -305,6 +305,7 @@
             border: var(--main-border);
             border-radius: 4px;
             font-size: 16px;
+            line-height: 22px;
             resize: vertical;
             box-sizing: border-box;
         }
