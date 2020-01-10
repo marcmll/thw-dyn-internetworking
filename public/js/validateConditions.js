@@ -53,5 +53,5 @@ const validateConditions = (conditions) => {
     });
 
     // Return the error state, if no error has been found: return false
-    return error
+    return error;
 }

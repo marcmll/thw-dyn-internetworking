@@ -226,7 +226,7 @@
             // Remove the class 'selected' from all divs within the '.number-rating' div
             document.querySelectorAll(`.number-rating > .star-icon`).forEach((item, index) => {
                 document.getElementById(`number-rating-${index+1}`).classList.remove('selected');
-            })
+            });
             // Add the class 'selected' to the star that was clicked by the user (highlights n amount of stars, where n is the rating clicked by the user)
             document.getElementById(ratingId).classList.add('selected');
         }

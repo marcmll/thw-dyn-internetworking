@@ -61,7 +61,7 @@ app.get('/book/:uid', (req, res) => {
     Book.find({ bookId: req.params.uid.toLowerCase() }).then((data) => {
         if (data.length > 0) {
             // If a book with the uid is found, save the data returned from the DB in the variable bookData
-            const bookData = data[0]
+            const bookData = data[0];
 
             // Find out if the user has already written a review for this book
             let userReviews = (req.cookies.userReviews || '').split(',');
@@ -78,16 +78,16 @@ app.get('/book/:uid', (req, res) => {
                     // If the user has written a review: DB Request: find the review with the corresponding _id
                     Review.find({ _id: reviewQuery._id.$ne }).then((userReviewData) => {
                         // When the user review has been found, render the book-details.ejs view with the bookData, userReviewData and reviewData recieved from the DB.
-                        res.render('book-details.ejs', { book: bookData, userReview: userReviewData[0], reviews: reviewData })
+                        res.render('book-details.ejs', { book: bookData, userReview: userReviewData[0], reviews: reviewData });
                     })
                 } else {
                     // If the user has yet to write a review for this book, render the book-details.ejs view with the bookData and reviewData recieved from the DB.
-                    res.render('book-details.ejs', { book: bookData, reviews: reviewData })
+                    res.render('book-details.ejs', { book: bookData, reviews: reviewData });
                 }
             })
         } else {
             // If no book with the uid is found, render the 404.ejs view with a custom 404 message.
-            res.render('404.ejs', { errorTitle: 'Book not Found', errorMsg: 'This URL does not return a book in our database. Check the URL, search or visit the <a href="/">homepage</a>.' })
+            res.render('404.ejs', { errorTitle: 'Book not Found', errorMsg: 'This URL does not return a book in our database. Check the URL, search or visit the <a href="/">homepage</a>.' });
         }
     });
 });
@@ -116,7 +116,7 @@ app.post('/uploadReview', (req, res) => {
         } else {
             userReviews += `,${reviewData.bookId},${reviewData._id}`;
         }
-        res.cookie('userReviews', userReviews); // overwrite Cookie 'userReviews'
+        res.cookie('userReviews', userReviews, { expires: new Date(Date.now() + (265* 24 * 360000)), httpOnly: true }); // overwrite Cookie 'userReviews'
 
         // Once Cookie is updated, redirect to the updateBookReviewCount route, passing along the bookId and bookObjectId from the hidden input fields
         res.redirect(`/updateBookReviewCount/${req.body.bookId}/${req.body.bookObjectId}`);
@@ -128,10 +128,10 @@ app.post('/uploadReview', (req, res) => {
 app.get('/updateBookReviewCount/:bookId/:bookObjectId', (req, res) => {
     // DB Request: find all reviews with the bookId equal to the bookObjectId in the parameters of the request URL
     Review.find({ bookId: req.params.bookObjectId }).then((reviewData) => {
-        let ratingSum = 0
+        let ratingSum = 0;
         // For each of the reviews found, add the number rating to the sum of all reviews
         reviewData.forEach((item, idnex) => {
-            ratingSum += item.numberRating
+            ratingSum += item.numberRating;
         });
 
         // DB Request: update the book with the _id equal to the bookObjectId: set the reviewCount to the amount of reviews found and set the average rating to the sum of all review ratings and the amount of reviews found (average)
@@ -148,7 +148,7 @@ app.post('/dbSearch', (req, res) => {
     const searchQuery = req.body.searchQuery.toString();
     // DB Request: find the book with the isbn set to the search field input
     Book.find({ isbn: searchQuery }).then((isbnData, err) => {
-        if (err) return res.send(err)
+        if (err) return res.send(err);
         if (isbnData.length > 0) {
             // If a book with this isbn in found, redirect to the books detail page
             res.redirect(`/book/${isbnData[0].bookId}`);
@@ -165,24 +165,24 @@ app.post('/dbSearch', (req, res) => {
 
 // GET Backend Redirect (Logged in: Dashboard // else: Login)
 app.get('/backend', (req, res) => {
-    const currentSession = req.session
+    const currentSession = req.session;
     // If session is found with loggedIn as true, redirect to the dashboard page
     if (currentSession.loggedIn) {
-        res.redirect('/backend/dashboard')
+        res.redirect('/backend/dashboard');
     } else {
         // If loggedIn is set to false, or no session is found, redirect to the login page
-        res.redirect('/backend/login')
+        res.redirect('/backend/login');
     }
 });
 
 
 // GET Backend Login Page
 app.get('/backend/login', (req, res) => {
-    const error = req.query.error
-    const currentSession = req.session
+    const error = req.query.error;
+    const currentSession = req.session;
     // If sessions is found with loggedIn as true, redirect to the dashboard page
     if (currentSession.loggedIn) {
-        res.redirect('/backend/dashboard')
+        res.redirect('/backend/dashboard');
     } else {
         // If loggedIn is set to false, or no session is found, render the backend-login.ejs view and send the error query if found.
         res.render('backend-login.ejs', { error: error });
@@ -197,12 +197,12 @@ app.post('/login', (req, res) => {
     DBUser.find({ password: password }).limit(1).then((data) => {
         if (data.length > 0) {
             // If DB User with the password is found, set the loggedIn session to true and redirect to the dashboard
-            const currentSession = req.session
-            currentSession.loggedIn = true
-            res.redirect('/backend/dashboard')
+            const currentSession = req.session;
+            currentSession.loggedIn = true;
+            res.redirect('/backend/dashboard');
         } else {
             // If no DB User is found, redirect to the login page with error set to true
-            res.redirect('/backend/login?error=true')
+            res.redirect('/backend/login?error=true');
         }
     });
 });
@@ -220,7 +220,7 @@ app.get('/backend/logout', (req, res) => {
 
 // GET Backend Dashboard
 app.get('/backend/dashboard', (req, res) => {
-    const currentSession = req.session
+    const currentSession = req.session;
     const filterOptions = [
         // Filter sorting results by the date submitted from most recent to longest ago
         {
@@ -262,7 +262,7 @@ app.get('/backend/dashboard', (req, res) => {
     // Get the selected filter based on the ?nextFilter query. If no query is found, set the selected filter to 0
     const selectedFilter = (req.query.nextFilter !== undefined && req.query.nextFilter !== '') ? (parseInt(req.query.nextFilter) === filterOptions.length ? 0 : req.query.nextFilter) : 0
     // Get the search query based on the ?search query. If no query is found, set the searchQuery to an empty object
-    const searchQuery = req.query.search ? { title: { $regex: req.query.search.toString(), $options: 'i' } } : {}
+    const searchQuery = req.query.search ? { title: { $regex: req.query.search.toString(), $options: 'i' } } : {};
     if (currentSession.loggedIn) {
         // If loggedIn is true, make DB Request finding all books with the selected search query and sort by the selected filter
         Book.find(searchQuery).sort([filterOptions[selectedFilter].filter]).then((data) => {
@@ -275,7 +275,7 @@ app.get('/backend/dashboard', (req, res) => {
         });
     } else {
         // If loggedIn is false or there is no session, redirect to the login page
-        res.redirect('/backend/login')
+        res.redirect('/backend/login');
     }
 });
 
@@ -296,7 +296,7 @@ app.post('/backend/editBook', (req, res) => {
             res.render('new-book-form.ejs', { book: data[0] });
         } else {
             // If no book is found, redirect to the empty new book form.
-            res.redirect('/backend/editBook')
+            res.redirect('/backend/editBook');
         }
     });
 });
@@ -350,12 +350,12 @@ app.post('/uploadBook', (req, res) => {
                 // When book has been successfully saved, redirect to the book detail page.
                 res.redirect(`/book/${req.body.bookId}`);
             }).catch((err) => {
-                const errorData = []
+                const errorData = [];
                 // If error occurs during the saving process, push custom error message to an errorData array.
                 if (err.keyPattern.isbn !== undefined) {
                     errorData.push('A book with this ISBN already exists in the database');
                 } else {
-                    errorData.push(err.errmsg)
+                    errorData.push(err.errmsg);
                 }
 
                 // Render the new-book-form.ejs view, passing in the data entered and the error message
@@ -400,13 +400,13 @@ app.post('/backend/search', (req, res) => {
 
 // GET Request: API Search Form
 app.get('/backend/apiSearch', (req, res) => {
-    const currentSession = req.session
+    const currentSession = req.session;
     // If session is found with loggedIn as true, render the backend-api-results.ejs view with an empty object named "books"
     if (currentSession.loggedIn) {
-        res.render('backend-api-results.ejs', { books: {} })
+        res.render('backend-api-results.ejs', { books: {} });
     } else {
         // If loggedIn is set to false, or no session is found, redirect to the login page
-        res.redirect('/backend/login')
+        res.redirect('/backend/login');
     }
 });
 
@@ -417,8 +417,8 @@ app.post('/backend/apiSearch', (req, res) => {
     // XHR Request: /search goodreads API endpoint with the search query and the api key
     xhr(`https://www.goodreads.com/search?q=${searchQuery}&key=tdA5Yy8qQvgKYHwdzm5Xg`, {}, (err, data) => {
         // If err is returned, throw err
-        if (err) throw err
-        const bookData = []
+        if (err) throw err;
+        const bookData = [];
         const objTree = new ObjTree();
         // If data is returned, convert it into JSON using the objTree npm package.
         data = objTree.parseXML(data);
@@ -431,10 +431,10 @@ app.post('/backend/apiSearch', (req, res) => {
                     title: item.best_book.title,
                     author: item.best_book.author.name
                 }
-            })
+            });
         }
         // Once iterating through all the results, render the backend-api-results.ejs view, passing in the book data for all books found and the search query
-        res.render('backend-api-results.ejs', { books: bookData, search: req.body.searchQuery })
+        res.render('backend-api-results.ejs', { books: bookData, search: req.body.searchQuery });
     });
 });
 
@@ -442,9 +442,9 @@ app.post('/backend/apiSearch', (req, res) => {
 // Function for matching the suffix of the day number: 1 -> 1st, 22 -> 22nd, 28 -> 28th, etc.
 const matchDaySuffix = (day) => {
     if (day) {
-        day = day.toString()
-        const secondToLastNum = parseInt(day.substring(day.length - 2, day.length - 1))
-        const lastNum = parseInt(day.substring(day.length - 1, day.length))
+        day = day.toString();
+        const secondToLastNum = parseInt(day.substring(day.length - 2, day.length - 1));
+        const lastNum = parseInt(day.substring(day.length - 1, day.length));
         if (secondToLastNum != 1) {
             switch (lastNum) {
                 case 1:
@@ -480,8 +480,8 @@ const matchFullMonth = (month) => {
         'October',
         'November',
         'December'
-    ]
-    return monthList[(month - 1)]
+    ];
+    return monthList[(month - 1)];
 }
 
 
@@ -498,25 +498,25 @@ const matchLanguageCode = (langCode) => {
 
 // Function for capitalizing the first letter of a string: history -> History
 const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
+    if (typeof s !== 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 
 // Function for matching the genres from the goodreads api to string genres: science-fiction -> Science Fiction
 const getGenres = (apiGenres) => {
     const genreList = ['biography', 'crime', 'fantasy', 'fiction', 'history', 'horror', 'mystery', 'nonfiction', 'romance', 'science', 'science-fiction']
-    const genres = []
+    const genres = [];
     // Iterate through all genres found by the goodreads api
     for (let i = 0; i < apiGenres.length; i++) {
         const genrePosition = genreList.indexOf(apiGenres[i]['-name'])
         if (genrePosition > -1) {
             // If genre is found in the predetermined list, push the matching genre to the genres array
-            genres.push(capitalize(genreList[genrePosition].split('-').join(' ')))
+            genres.push(capitalize(genreList[genrePosition].split('-').join(' ')));
         }
         if (genres.length >= 2) {
             // Once 2 genres have been matched, return the list and stop iterating.
-            return genres
+            return genres;
         }
     }
     return genres
@@ -529,7 +529,7 @@ app.post('/backend/apiFormFill', (req, res) => {
     // XHR Request: /book/show/ API endpoint with the bookid from the API /search results and the API key
     xhr(`https://www.goodreads.com/book/show/${goodreadsBookId}.xml?key=tdA5Yy8qQvgKYHwdzm5Xg`, {}, (err, data) => {
         // Catch errors
-        if (err) throw err
+        if (err) throw err;
 
         // Initialize objectTree for converting XML to JSON
         const objTree = new ObjTree();
@@ -538,17 +538,17 @@ app.post('/backend/apiFormFill', (req, res) => {
         data = (objTree.parseXML(data)).GoodreadsResponse.book;
 
         // Get Author List from API result
-        let authors = []
+        let authors = [];
         if (data.authors.author.name !== undefined) {
-            authors.push(data.authors.author.name)
+            authors.push(data.authors.author.name);
         } else {
             for (const author of data.authors.author) {
-                authors.push(author.name)
+                authors.push(author.name);
             }
         }
 
         // Get Genres using the getGenres function
-        const genres = getGenres(data.popular_shelves.shelf)
+        const genres = getGenres(data.popular_shelves.shelf);
 
         // Get date published and format it
         const rawDate = [data.work.original_publication_day['#text'], data.work.original_publication_month['#text'], data.work.original_publication_year['#text']];
@@ -577,10 +577,24 @@ app.post('/backend/apiFormFill', (req, res) => {
 });
 
 
+// GET Request: Terms
+app.get('/terms', (req, res) => {
+    // Render the terms.ejs view,
+    res.render('terms.ejs', {});
+});
+
+
+// GET Request: Privacy Policy
+app.get('/privacy', (req, res) => {
+    // Render the terms.ejs view,
+    res.render('privacy.ejs', {});
+});
+
+
 // GET Request: 404 (All Routes not found before this point)
 app.get('*', (req, res) => {
     // Render the 404.ejs view, passing in a custom error message
-    res.render('404.ejs', { errorTitle: 'URL not Found', errorMsg: 'This URL does not seem to exist. Check the URL, search or visit the <a href="/">homepage</a>.' })
+    res.render('404.ejs', { errorTitle: 'URL not Found', errorMsg: 'This URL does not seem to exist. Check the URL, search or visit the <a href="/">homepage</a>.' });
 });
 
 
@@ -592,7 +606,7 @@ mongoose.connect('mongodb://betterreads_admin:betterreads-pwd-2019@localhost:270
     useFindAndModify: false
 }, (err) => {
     // Catch connection error
-    if (err) return console.log(err)
+    if (err) return console.log(err);
 
     // Confirm DB Connection
     console.log('Connected');
